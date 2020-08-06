@@ -1,0 +1,22 @@
+{
+    "title": "Jeff Chen的技术博客",
+    "description": "记录遇到的技术问题和解决方案",
+    "author": "Jeff Chen",
+    "language": "zh-hans",
+    "gitbook": "3.2.3",
+    "structure": {
+        "readme": "README.md"
+    },
+    "links": {
+        "sidebar": {
+            "首页": "https://chenqing24.github.io"
+        }
+    },
+    "plugins": [
+        "-lunr",
+        "-search",
+        "-highlight",
+        "-livereload",
+        "search-pro"
+    ]
+}
