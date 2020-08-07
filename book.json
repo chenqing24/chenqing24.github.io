@@ -17,6 +17,7 @@
         "-search",
         "-highlight",
         "-livereload",
+        "expandable-chapters",
         "search-pro"
     ]
 }
