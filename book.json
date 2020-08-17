@@ -18,6 +18,13 @@
         "-highlight",
         "-livereload",
         "expandable-chapters",
-        "search-pro"
-    ]
+        "search-pro",
+        "toc2"
+    ],
+    "pluginsConfig": {
+        "toc2": {
+            "addClass": true,
+            "className": "toc"
+        }
+    }
 }
