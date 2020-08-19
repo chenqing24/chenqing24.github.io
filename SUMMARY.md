@@ -4,6 +4,7 @@
 * 自动化运维
   * [监控告警](doc/monitor_system/监控告警/index.md)
     * [Prometheus维度指标监控](doc/monitor_system/监控告警/prometheus/prometheus.md)
+    * [ELK日志采集](doc/monitor_system/监控告警/elk/index.md)
   * 持续集成CICD
   * 配置管理
     * [CMDBuild](doc/monitor_system/CICD/cmdbuild.md)
@@ -13,4 +14,7 @@
   * [接口管理YApi](doc/tech_tutorial/yapi.md)
   * [微服务网关ApiSix](doc/tech_tutorial/apisix.md)
   * [静态网站生产GitBook](doc/tech_tutorial/gitbook.md)
+  * 中间件
+    * Zookeeper
+    * Kafka
 * 互联网金融

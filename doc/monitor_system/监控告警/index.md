@@ -75,6 +75,8 @@
 | rel_type | 字典 | 必填 | 采集类型，从 Metric、Log、APM 中选择 |
 | namespace | String | 默认default | 命名空间 |
 
+对不同的采集类型，实现的方式是
+
 ### 告警规则库
 
 | 字段名 | 类型 | 范式 | 备注 |

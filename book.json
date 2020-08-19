@@ -19,7 +19,8 @@
         "-livereload",
         "expandable-chapters",
         "search-pro",
-        "toc2"
+        "toc2",
+        "mermaid-gb3"
     ],
     "pluginsConfig": {
         "toc2": {
