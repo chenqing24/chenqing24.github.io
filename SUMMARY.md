@@ -16,5 +16,5 @@
   * [静态网站生产GitBook](doc/tech_tutorial/gitbook.md)
   * 中间件
     * Zookeeper
-    * Kafka
+    * [Kafka](doc/tech_tutorial/中间件/kafka.md)
 * 互联网金融
