@@ -155,7 +155,21 @@ output {
     hosts => ["10.10.0.140:9200"]
     index => "syslog-%{+YYYY.MM.dd}"
     id => "dev-es"
+    # 指定模板，解决单节点有副本，造成集群状态yellow的问题
+    template => "/usr/share/logstash/config/syslog.json"
+    template_name => "syslog-*"
+    template_overwrite => true
   }
+}
+```
+
+```json
+// syslog.json，由于默认1分片1副本，会在单实例上造成unassign shard，导致yellow，这里设置不要副本
+{
+    "template": "syslog-*",
+    "settings": {
+      "number_of_replicas" : 0
+    }
 }
 ```
 
