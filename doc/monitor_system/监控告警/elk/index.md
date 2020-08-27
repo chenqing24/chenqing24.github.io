@@ -5,9 +5,11 @@
 ## 参考
 
 * [官方文档](https://www.elastic.co/guide/)
+* [Elastic Stack 技术指南](http://docs.flycloud.me/docs/ELKStack/)
 * [索引管理工具curator](https://github.com/elastic/curator)
 * [ELK 架构和 Filebeat 工作原理详解](https://developer.ibm.com/zh/articles/os-cn-elk-filebeat/)
 * [监控方案Elasticsearch Exporter](https://github.com/justwatchcom/elasticsearch_exporter)
+* [Prometheus博文](/doc/monitor_system/监控告警/prometheus/prometheus.md)
 
 ## 架构
 
@@ -77,6 +79,49 @@ elasticsearch_exporter:
     - "0.0.0.0:9114:9114"
 ```
 
+在Prometheus配置服务发现
+
+```json
+// sd_config.json添加相关服务
+  {
+    "targets": [
+        "10.10.0.140:9114"
+    ],
+    "labels": {
+      "env": "dev",
+      "job": "elasticsearch"
+    }
+  },
+```
+
+注册成功如图![es服务注册Prometheus](es_server_reg.png)
+通过Prometheus的HTTP API确认ES集群的存活，如
+`'curl http://10.10.0.140:9090/api/v1/query?query=elasticsearch_cluster_health_up'`
+反馈json如下：
+
+```json
+{
+    "status": "success",
+    "data": {
+        "resultType": "vector",
+        "result": [
+            {
+                "metric": {
+                    "__name__": "elasticsearch_cluster_health_up",  // 唯一Metric，其他是tag
+                    "env": "dev",
+                    "instance": "10.10.0.140:9114",  // 对应es的Exporter地址
+                    "job": "elasticsearch"
+                },
+                "value": [
+                    1598001650.145,  // 采集的最后时间戳
+                    "1"  // 值，根据Metric定义
+                ]
+            }
+        ]
+    }
+}
+```
+
 ##### 常用指标
 
 | 指标 | 监控目标 | 类型 | 单位 | 意义 |
@@ -85,7 +130,23 @@ elasticsearch_exporter:
 | elasticsearch_cluster_health_active_shards | 集群 | gauge | 正整数 | 分片总数量，包括副本 |
 | elasticsearch_cluster_health_unassigned_shards | 集群 | gauge | 正整数 | 未分配的分片数，大于总分片数的50%，代表集群异常 |
 | elasticsearch_jvm_memory_max_bytes | node | gauge | byte | jvm最大内存数，由Xmx指定 |
-| elasticsearch_jvm_memory_used_bytes{area="heap"} | node | gauge | byte | node的jvm使用的堆内存数，大于总内存的85%代表异常 |
+| elasticsearch_jvm_memory_used_bytes{area="heap"} | node | gauge | byte | node的jvm使用的堆内存数，大于总内存的90%代表异常 |
+| elasticsearch_filesystem_data_used_percent | 集群 | gauge | 百分比 | 已用磁盘百分比 |
+
+* `elasticsearch_filesystem_data_used_percent = 100 * (elasticsearch_filesystem_data_size_bytes - elasticsearch_filesystem_data_free_bytes) / elasticsearch_filesystem_data_size_bytes`
+
+```yml
+# 接Prometheus的常用告警规则elasticsearch.rules.yml
+# calculate filesystem used and free percent
+elasticsearch_filesystem_data_used_percent = 100 * (elasticsearch_filesystem_data_size_bytes - elasticsearch_filesystem_data_free_bytes) / elasticsearch_filesystem_data_size_bytes
+
+# alert if heap usage is over 90%
+ALERT ElasticsearchHeapTooHigh
+  IF elasticsearch_jvm_memory_used_bytes{area="heap"} / elasticsearch_jvm_memory_max_bytes{area="heap"} > 0.9
+  FOR 15m
+  LABELS {severity="critical"}
+  ANNOTATIONS {description="The heap usage is over 90% for 15m", summary="ElasticSearch node {{$labels.node}} heap usage is high"}
+```
 
 ### Kibana
 
@@ -113,12 +174,14 @@ chmod 777 /opt/logstash
 cd /opt/logstash
 # 生成相关配置文件，参考下面
 # 启动
-docker run \
-  -d \
+docker run -d \
   --name=logstash \
+  --volume=/opt/logstash/:/usr/share/logstash/config/ \
   --rm \
-  -v /opt/logstash/:/usr/share/logstash/config/ \
-  logstash:7.8.1 -f /usr/share/logstash/config/logstash.conf
+  -m 2g \
+  -p 9600:9600 \
+  -t logstash:7.8.1 \
+  -f /usr/share/logstash/config/logstash.conf
 ```
 
 ```yml

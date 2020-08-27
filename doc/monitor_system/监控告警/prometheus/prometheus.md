@@ -57,7 +57,7 @@ scrape_configs:  # 监控目标
       - targets: ['localhost:9090']  # 默认采集HTTP地址：http://localhost:9090/metrics
   - job_name: node  # 适配下方的主机节点监控
     scrape_interval: 5s  # 覆盖全局变量
- 
+
     file_sd_configs:  # 读服务发现目标文件，支持*通配符，适配下文服务发现
       - files:
         - sd_config.json
@@ -77,13 +77,27 @@ alerting:
 ### 启动
 
 ```bash
-# 指定配置路径，暴露9090端口，限制最大内存
+# 指定配置路径，暴露9090端口，限制最大内存，数据保留7天
 docker run -d --name=prometheus \
     -m 4G \
     --restart=always \
     -p 9090:9090 \
     -v /opt/prometheus:/etc/prometheus \
     prom/prometheus:v2.19.3
+
+# 带参数启动
+docker run \
+  --name=prometheus \
+  --volume=/opt/prometheus:/etc/prometheus \
+  --volume=/prometheus \
+  -p 9090:9090 \
+  --restart=always \
+  --detach=true prom/prometheus:v2.19.3 \
+  --storage.tsdb.retention.time=7d \
+  --config.file=/etc/prometheus/prometheus.yml \
+  --storage.tsdb.path=/prometheus \
+  --web.console.libraries=/usr/share/prometheus/console_libraries \
+  --web.console.templates=/usr/share/prometheus/consoles
 ```
 
 ## 使用
@@ -117,7 +131,7 @@ groups:
 
 ```bash
 # 验证规则文件是否正确
-promtool check rules first.rules.ymlru
+promtool check rules first.rules.yml
 ```
 
 ![验证通过](prom_rule.png)
@@ -143,7 +157,7 @@ groups:
 
 在Prometheus的conf中启用，效果如下 ![prom_alert](prom_alert_page.png)
 
-### 服务发现，基于文件
+### 服务发现基于文件
 
 ```json
 // 在配置目录下定义监控服务目标的 sd_config.json
