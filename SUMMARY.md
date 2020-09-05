@@ -16,6 +16,7 @@
   * [静态网站生产GitBook](doc/tech_tutorial/gitbook.md)
   * Linux
     * [内核kernel](doc/tech_tutorial/linux工具/kernel.md)
+    * [常用运维Bash](doc/tech_tutorial/linux工具/ops_bash.md)
   * 虚拟化
     * [Docker](doc/tech_tutorial/虚拟化/docker.md)
   * 中间件
