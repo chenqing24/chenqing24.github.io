@@ -174,6 +174,25 @@ groups:
 
 在Prometheus的conf中启用，效果如下 ![prom_sd](prom_sd.png)
 
+## 常用PromQL举例
+
+```
+# 瞬时向量表达式：按照bu, product维度区分，计算指标和
+sum(es_inte_applog_error_count_group_by_servername_last_min) by (bu, product)
+
+# 瞬时向量表达式：按照bu, product维度区分，计算指标和，5分钟前的数据
+sum(es_inte_applog_error_count_group_by_servername_last_min offset 5m) by (bu, product) 
+
+# 计算指标个数
+count(es_inte_applog_error_count_group_by_servername_last_min)
+
+# 区间向量表达式：只能用于表格，获取指定指标 5分钟内的所有样本数据
+es_inte_applog_error_count_group_by_servername_last_min{product="INS"}[5m]
+
+# 瞬时向量表达式：获取指定指标 5分钟内的所有样本数据之和  sum_over_time(range-vector)：指定时间间隔内所有值的总和
+sum_over_time(es_inte_applog_error_count_group_by_servername_last_min{product="INS"}[5m])
+```
+
 ## 性能压测报告
 
 测试主机配置：4C8G

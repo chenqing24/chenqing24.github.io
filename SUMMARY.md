@@ -4,6 +4,7 @@
 * 自动化运维
   * [监控告警](doc/monitor_system/监控告警/index.md)
     * [Prometheus指标监控](doc/monitor_system/监控告警/prometheus/prometheus.md)
+    * [Prometheus Pushgateway](doc/monitor_system/监控告警/prometheus/pushgateway.md)
     * [ELK日志采集](doc/monitor_system/监控告警/elk/index.md)
   * 持续集成CICD
   * 配置管理
