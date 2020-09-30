@@ -176,7 +176,7 @@ groups:
 
 ## 常用PromQL举例
 
-```
+```ini
 # 瞬时向量表达式：按照bu, product维度区分，计算指标和
 sum(es_inte_applog_error_count_group_by_servername_last_min) by (bu, product)
 
@@ -191,6 +191,12 @@ es_inte_applog_error_count_group_by_servername_last_min{product="INS"}[5m]
 
 # 瞬时向量表达式：获取指定指标 5分钟内的所有样本数据之和  sum_over_time(range-vector)：指定时间间隔内所有值的总和
 sum_over_time(es_inte_applog_error_count_group_by_servername_last_min{product="INS"}[5m])
+
+# 瞬时向量 按业务线区分，某指标的平均1分钟内和，由于Prometheus15秒pull次，会导致1分钟内指标读4次（4个点），所以用avg_over_time取区间均值
+sum(avg_over_time(es_inte_applog_error_count_group_by_servername_last_min[1m])) by (bu)
+
+# 计算平均1分钟，2xx在总量中的%
+sum(avg_over_time(es_prod_accesslog_status_count_group_by_host_last_min{status=~'2.+'}[1m])) /sum(avg_over_time(es_prod_accesslog_status_count_group_by_host_last_min[1m]))
 ```
 
 ## 性能压测报告
