@@ -56,9 +56,11 @@ typings/
 
 # dotenv environment variables file
 .env
+ENV
 
 # gitbook
 _book
+site
 
 # mac
 .DS_Store

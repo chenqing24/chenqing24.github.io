@@ -1,11 +1,11 @@
 
-# 生成静态文件
-echo '==== gitbook build .'
-gitbook build .
+# 生成静态文件目录site
+echo '==== mkdocs build'
+mkdocs build
 
 # 进入生成文件目录，执行git init
-echo '==== cd _book/ && git init'
-cd _book/
+echo '==== cd site/ && git init'
+cd site/
 sleep 1
 git init
 
