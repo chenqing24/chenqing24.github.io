@@ -23,7 +23,16 @@
 
 运行Activiti的web容器
 
-* 参考Dockerfile: [http://gitlab.jrlab.17usoft.com/dockerfile/tomcat7-jdk8](http://gitlab.jrlab.17usoft.com/dockerfile/tomcat7-jdk8)
+* 参考Dockerfile: 
+```yaml
+FROM tomcat:7
+
+# 暴露weapps
+VOLUME [ "/usr/local/tomcat/webapps" ]
+
+EXPOSE 8080
+CMD ["catalina.sh", "run"]
+```
 * `docker run --name=tomcat7 --volume=$(pwd)/webapps:/usr/local/tomcat/webapps -p 8080:8080 -d tomcat7-jdk8:latest`
 
 ### Activiti 6
