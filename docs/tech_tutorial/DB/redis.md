@@ -13,3 +13,6 @@ docker run -d \
 # 进入redis容器的cli
 docker exec -it redis-master redis-cli
 ```
+
+### 组建HA集群
+
