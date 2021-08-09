@@ -1,6 +1,16 @@
-# MkDocs 静态网页生成
+# MkDocs 静态网站生成
 
 For full documentation visit [mkdocs.org](https://mkdocs.org).
+
+## 安装
+
+```bash
+cd yourwebsite
+virtualenv -p python3 ENV
+source ENV/bin/activate
+
+pip install mkdocs
+```
 
 ## Commands
 
