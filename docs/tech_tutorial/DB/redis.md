@@ -98,6 +98,8 @@ services:
 ```conf
 port 26379
 dir /tmp
+; 可选：如果使用redis_default网络，用以下配置
+; sentinel monitor mymaster 172.20.0.4 6379 2
 sentinel monitor mymaster 10.10.0.1 6380 2
 sentinel auth-pass mymaster redis_pwd
 sentinel down-after-milliseconds mymaster 30000
@@ -135,6 +137,11 @@ services:
     command: redis-sentinel /usr/local/etc/redis/sentinel.conf
     volumes:
       - ./sentinel3.conf:/usr/local/etc/redis/sentinel.conf
+# 可选，连redis集群的专有网络
+# networks: 
+#   default:
+#     external:
+#       name: redis_default      
 ```
 
 `docker-compose up -d`启动后，进入任意sentinel验证：
@@ -145,5 +152,11 @@ redis-cli -p 26379
 ```
 
 > `127.0.0.1:26379> info`  
-> `127.0.0.1:26379> sentinel masters`
-> `127.0.0.1:26379> sentinel master mymaster`
+> `127.0.0.1:26379> sentinel masters`  
+> `127.0.0.1:26379> sentinel master mymaster`  
+
+
+## 使用
+
+### python通过哨兵访问redis
+
