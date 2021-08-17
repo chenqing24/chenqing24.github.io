@@ -160,3 +160,136 @@ redis-cli -p 26379
 
 ### python通过哨兵访问redis
 
+py2和py3都测试通过
+
+```py
+#!/usr/bin/env python
+# -*- coding: UTF-8 -*-
+import redis
+from redis.sentinel import Sentinel
+
+
+# redis直连地址
+REDISHOST = '10.10.0.1'
+
+
+class RedisHelper(object):
+    def __init__(self,
+                 channel,
+                 host=REDISHOST,
+                 port=6379,
+                 sentinel_flg=False,
+                 sentinel_hosts=None, # 哨兵列表，格式[('192.168.10.1', 26379), ('192.168.10.2',26379), ('192.168.10.3',26379)]
+                 master_name=None, # 主节点名
+                 password=None):
+        self.channel = channel
+        self.host = host
+        self.port = port
+        # cq 2021-8-17 哨兵模式
+        if sentinel_flg:
+            sentinel = Sentinel(sentinel_hosts, socket_timeout=0.1)
+            self.host, self.port = sentinel.discover_master(master_name)
+
+            if password:
+                self.__conn = redis.StrictRedis(
+                    host=self.host, 
+                    port=self.port,
+                    password=password)
+            else:
+                self.__conn = redis.StrictRedis(
+                    host=self.host, 
+                    port=self.port)
+        else:
+            # 非哨兵，直连
+            self.__conn = redis.Redis(self.host, self.port)
+
+        print("host: {}, channel:{}".format(self.host, self.channel))
+
+    def ping(self):
+        try:
+            self.__conn.ping()
+            return True
+        except Exception as e:
+            print(e)
+            return False
+
+    # 发送消息
+    def public(self, msg):
+        if self.ping():
+            self.__conn.publish(self.channel, msg)
+            return True
+        else:
+            return False
+
+    # 订阅
+    def subscribe(self):
+        if self.ping():
+            # 打开收音机
+            pub = self.__conn.pubsub()
+            # 调频道
+            pub.subscribe(self.channel)
+            result = pub.parse_response()
+            # print(result) 第一条消息是订阅反馈，忽略
+            return pub
+        else:
+            return False
+
+
+######## unit test ########
+import unittest
+import logging
+
+class RedisTest(unittest.TestCase):
+    def setUp(self):
+        # 设置环境变量
+        self.redishost = REDISHOST
+        self.channel = '---cq-test---'
+        self.test_msg = 'hello world'
+
+        self.sentinel_hosts = [
+            ("0.0.0.0", 26380),
+            ("0.0.0.0", 26381),
+            ("0.0.0.0", 26382),
+        ]
+        self.master_name = 'mymaster'
+        self.password = 'redis_pwd'
+
+        self.obj = RedisHelper(
+            channel=self.channel,
+            host=self.redishost,
+            sentinel_flg=True,
+            sentinel_hosts=self.sentinel_hosts,
+            master_name=self.master_name,
+            password=self.password)
+    
+    def tearDown(self):
+        self.redishost = None
+        self.channel = None
+        self.test_msg = None
+        self.sentinel_hosts = None
+        self.master_name = None
+        self.password = None
+        self.obj = None
+    
+    def test_ping(self):
+        # 测试ping
+        self.assertEqual(self.obj.ping(), True)
+
+    def test_public(self):
+        # 测试发布
+        self.assertEqual(self.obj.public(msg=self.test_msg), True)
+
+    def test_subscribe(self):
+        # 测试订阅
+        redis_sub = self.obj.subscribe()
+        # 先发1条
+        self.obj.public(msg=self.test_msg)
+        # 拿1条
+        _msg = redis_sub.parse_response()
+
+        self.assertEqual(_msg[2], self.test_msg)
+
+
+if __name__=='__main__':
+    unittest.main()
+```
