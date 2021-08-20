@@ -190,18 +190,15 @@ class RedisHelper(object):
             sentinel = Sentinel(sentinel_hosts, socket_timeout=0.1)
             self.host, self.port = sentinel.discover_master(master_name)
 
-            if password:
-                self.__conn = redis.StrictRedis(
-                    host=self.host, 
-                    port=self.port,
-                    password=password)
-            else:
-                self.__conn = redis.StrictRedis(
-                    host=self.host, 
-                    port=self.port)
+        if password:
+            self.__conn = redis.StrictRedis(
+                host=self.host, 
+                port=self.port,
+                password=password)
         else:
-            # 非哨兵，直连
-            self.__conn = redis.Redis(self.host, self.port)
+            self.__conn = redis.StrictRedis(
+                host=self.host, 
+                port=self.port)
 
         print("host: {}, channel:{}".format(self.host, self.channel))
 
