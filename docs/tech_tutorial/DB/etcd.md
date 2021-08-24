@@ -39,7 +39,21 @@ etcdctl get /ops-event-web  # 反馈：ops-event-web
 etcdctl rm /ops-event-web
 ```
 
+### Web UI
+
+基于etcdkeeper，访问`http://localhost:12379`
+
+```bash
+# docker启动
+docker run -d --name etcdkeeper \
+	-p 12379:8080 \
+	evildecay/etcdkeeper
+```
+
+![ui效果](etcd_ui.png)
+
 ## 参考
 
 * Github官网 <https://github.com/etcd-io/etcd>
 * 国人翻译的手册 <https://doczhcn.gitbook.io/etcd/>
+* etcdkeeper官网 <https://github.com/evildecay/etcdkeeper>
