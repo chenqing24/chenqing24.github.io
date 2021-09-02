@@ -68,7 +68,8 @@ DB_CONNECT_PORT     = {{getv "/ops-event-web/DB_CONNECT_PORT"}}
 # 运行1次
 confd -confdir . -onetime -backend etcd -node http://127.0.0.1:2379
 
-# 持续运行
+# 持续运行，每隔10s监控key是否变更
+confd -confdir . -backend="etcd" -node=http://127.0.0.1:2379 -interval=10
 ```
 
 执行效果
