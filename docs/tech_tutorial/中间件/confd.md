@@ -1,5 +1,13 @@
 # Confd 服务配置中心
 
+## 架构
+
+配置服务中心的模型
+![confd作为配置服务的整体架构](confd_arch.png)
+
+confd工作流程
+![confd的工作pipeline](confd_pipeline.png)
+
 ## 安装
 
 在本地mac上验证通过
