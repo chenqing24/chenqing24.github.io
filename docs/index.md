@@ -1,26 +1,7 @@
 # 首页
 
-* [介绍](README.md)
-* 自动化运维
-  * [监控告警](doc/monitor_system/监控告警/index.md)
-    * [Prometheus指标监控](doc/monitor_system/监控告警/prometheus/prometheus.md)
-    * [Prometheus Pushgateway](doc/monitor_system/监控告警/prometheus/pushgateway.md)
-    * [ELK日志采集](doc/monitor_system/监控告警/elk/index.md)
-  * 持续集成CICD
-  * 配置管理
-    * [CMDBuild](doc/monitor_system/CICD/cmdbuild.md)
-* 技术教程
-  * [Markdown语法](doc/tech_tutorial/markdown.md)
-  * [工作流Activiti](doc/tech_tutorial/workflow/activiti.md)
-  * [接口管理YApi](doc/tech_tutorial/yapi.md)
-  * [微服务网关ApiSix](doc/tech_tutorial/apisix.md)
-  * [静态网站生产GitBook](doc/tech_tutorial/gitbook.md)
-  * Linux
-    * [内核kernel](doc/tech_tutorial/linux工具/kernel.md)
-    * [常用运维Bash](doc/tech_tutorial/linux工具/ops_bash.md)
-  * 虚拟化
-    * [Docker](doc/tech_tutorial/虚拟化/docker.md)
-  * 中间件
-    * Zookeeper
-    * [Kafka](doc/tech_tutorial/中间件/kafka.md)
-* 互联网金融
+* 2021-9-6
+  * [Jsonlogic 简单方便的规则引擎](tech_tutorial/py库/json-logic-py.md)
+  * 重构了首页索引，基于简单的时序change log
+* 2021-9-3
+  * [基于Confd的一种本地配置服务方案](业务方案/配置管理/基于confd的本地服务配置管理.md)
