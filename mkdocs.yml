@@ -1,2 +1,10 @@
 site_name: Jeff.Chen的技术博客
 
+theme:
+  name: null
+  custom_dir: 'cinder'
+
+# 不要nav，会导致自动菜单目录失效
+# nav:
+#   - Home: index.md
+#   - 关于博主: aboutme.md
