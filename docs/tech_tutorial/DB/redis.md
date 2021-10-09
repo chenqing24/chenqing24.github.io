@@ -158,6 +158,18 @@ redis-cli -p 26379
 
 ## 使用
 
+### 启用访问密码
+
+1. 修改`redis.conf`，启用以下配置`requirepass myPassword # 要设置的密码`
+2. 重启redis
+3. 登录验证
+```bash
+$ ./redis-cli -h 127.0.0.1 -p 6379 -a myPassword
+127.0.0.1:6379> config get requirepass
+1) "requirepass"
+2) "myPassword"
+```
+
 ### python通过哨兵访问redis
 
 py2和py3都测试通过
