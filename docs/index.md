@@ -2,6 +2,8 @@
 
 ## 文章一览
 
+* 2021-10-8
+  > * [腾讯蓝鲸CMDB](业务方案/配置管理/bk_cmdb.md)
 * 2021-9-6
   > * [Jsonlogic 简单方便的规则引擎](tech_tutorial/workflow/jsonlogic.md)
   > * 重构了首页索引，基于简单的时序change log
