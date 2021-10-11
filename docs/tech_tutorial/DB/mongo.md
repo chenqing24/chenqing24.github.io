@@ -25,6 +25,10 @@ db.createUser(
 db.auth("cc", "cc")
 ```
 
+### 备份数据
+
+`mongodump --host 127.0.0.1 --port 27017 --out backup/ --db cmdb`
+
 ## 参考
 
 * MongoDB中文网 <https://www.mongodb.org.cn/>

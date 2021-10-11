@@ -30,7 +30,7 @@ docker run -d \
 	--name=cmdb \
 	-p 8090:8090 \
 	--restart=always \
-	ccr.ccs.tencentyun.com/bk.io/cmdb-standalone:v3.6.5
+	ccr.ccs.tencentyun.com/bk.io/cmdb-standalone:v3.9.5
 ```
 
 默认配置：
@@ -39,6 +39,8 @@ docker run -d \
 * mongo `cc:cc@127.0.0.1:27017`，db `cmdb`
 * redis `127.0.0.1:6379`，pw `cc`
 * web访问 <http://127.0.0.1:8090/>，默认用户`admin`，不用密码
+
+![webui](bkcmdb_webui.jpg)
 
 ## 使用
 
@@ -49,6 +51,12 @@ docker run -d \
 ### 接口调用
 
 ### 数据备份
+
+## TODO
+
+* 用户授权访问
+* 主机信息自动采集和注册
+* 对接统一服务平台入口
 
 ## 参考
 

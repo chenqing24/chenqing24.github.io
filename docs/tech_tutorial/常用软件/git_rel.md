@@ -19,3 +19,13 @@ git remote set-url --add origin https://github.com/your-github-account/your-new-
 ```
 
 cli的实质是在`.git/config`的`[remote "origin"]`下添加一个新url
+
+### 设置代理
+
+```bash
+# 添加代理
+git config --global http.proxy 'socks://localhost:7070'
+
+# 取消代理
+git config --global --unset http.proxy
+```
