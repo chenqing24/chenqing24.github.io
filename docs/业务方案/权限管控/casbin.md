@@ -2,7 +2,7 @@
 
 ## 场景
 
-### 基于URI管控
+### 基于URI访问
 
 场景描述：
 
@@ -38,6 +38,10 @@ Request格式
 alice, /alice_data/hello, GET
 alice, /alice_data/hello, POST
 ```
+
+### 基于RBAC角色管控
+
+[TODO]
 
 ## 参考
 
