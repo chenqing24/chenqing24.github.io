@@ -31,7 +31,9 @@
 docker run -d \
 	--name=cmdb \
 	--restart=always \
+  -v /Users/jeffchen/bak:/tmp/export \
 	-p 8090:8090 \
+  -p 18080:8080 \
 	ccr.ccs.tencentyun.com/bk.io/cmdb-standalone:v3.9.5
 ```
 
@@ -41,6 +43,8 @@ docker run -d \
 * mongo `cc:cc@127.0.0.1:27017`，db `cmdb`
 * redis `127.0.0.1:6379`，pw `cc`
 * web访问 <http://127.0.0.1:8090/>，默认用户`admin`，不用密码
+* 内部`8080`端口是api服务
+* `/tmp/export`是mongo导出数据的目录
 
 ![webui](bkcmdb_webui.jpg)
 
@@ -76,14 +80,47 @@ Docker版服务默认不开启权限，直接以admin操作，非常不安全，
 
 ### 接口调用
 
+注意事项:
+
+* 在请求head中添加`BK_USER=admin;HTTP_BLUEKING_SUPPLIER_ID=0`，否则会报错`[user]授权信息查询失败`
+* api当前版本`v3`
+* 建议使用api_server的端口，需要对外暴露
+
+```bash
+# 查询主机列表，默认空库
+curl --location --request POST 'http://0.0.0.0:18080/api/v3/hosts/search' \
+--header 'HTTP_BLUEKING_SUPPLIER_ID: 0' \
+--header 'BK_USER: admin'
+```
+
+反馈:
+
+```json
+{
+    "result": true,
+    "bk_error_code": 0,
+    "bk_error_msg": "success",
+    "permission": null,
+    "data": {
+        "count": 0,
+        "info": []
+    }
+}
+```
+
 ### 数据备份和恢复
 
-1. mongo备份cmdb
-   > 1. 进入docker的mongo/bin目录`/data/sidecar/mongodb/bin`
-   > 2. 导出`./mongodump --host 127.0.0.1 --port 27017 --out /tmp/export --db cmdb`
-   > 3. 打包压缩`tar -czvf cmdb.tar.gz /tmp/export/cmdb/`
-2. 从备份恢复（在mongo/bin目录）
-   > 1. `./mongorestore -h 127.0.0.1:27017 -d cmdb /tmp/export/cmdb/`
+mongo备份cmdb:
+
+1. `docker exec -it cmdb /data/sidecar/mongodb/bin/mongodump --host 127.0.0.1 --port 27017 --out /tmp/export --db cmdb`
+2. 打包压缩`tar -czvf cmdb.tar.gz /tmp/export/cmdb/`
+
+从备份恢复（在mongo/bin目录）:
+1. `docker exec -it cmdb /data/sidecar/mongodb/bin/mongorestore -h 127.0.0.1:27017 -d cmdb /tmp/export/cmdb/`
+
+坑:
+
+* docker版默认会初始化db，写入部分业务模型，导致从备份导入后，出现重复记录
 
 ### 对接密码管理
 
