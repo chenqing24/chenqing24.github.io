@@ -30,8 +30,8 @@
 ```bash
 docker run -d \
 	--name=cmdb \
-	-p 8090:8090 \
 	--restart=always \
+	-p 8090:8090 \
 	ccr.ccs.tencentyun.com/bk.io/cmdb-standalone:v3.9.5
 ```
 
@@ -76,7 +76,14 @@ Docker版服务默认不开启权限，直接以admin操作，非常不安全，
 
 ### 接口调用
 
-### 数据备份
+### 数据备份和恢复
+
+1. mongo备份cmdb
+   > 1. 进入docker的mongo/bin目录`/data/sidecar/mongodb/bin`
+   > 2. 导出`./mongodump --host 127.0.0.1 --port 27017 --out /tmp/export --db cmdb`
+   > 3. 打包压缩`tar -czvf cmdb.tar.gz /tmp/export/cmdb/`
+2. 从备份恢复（在mongo/bin目录）
+   > 1. `./mongorestore -h 127.0.0.1:27017 -d cmdb /tmp/export/cmdb/`
 
 ### 对接密码管理
 
