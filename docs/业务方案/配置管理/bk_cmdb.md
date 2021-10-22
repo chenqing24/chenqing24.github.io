@@ -83,7 +83,7 @@ Docker版服务默认不开启权限，直接以admin操作，非常不安全，
 注意事项:
 
 * 在请求head中添加`BK_USER=admin;HTTP_BLUEKING_SUPPLIER_ID=0`，否则会报错`[user]授权信息查询失败`
-* api当前版本`v3`
+* api当前版本`v3`，建议直接看github上`docs/apidoc/v3.1`下的文档，官网上的有点过期
 * 建议使用api_server的端口，需要对外暴露
 
 ```bash
