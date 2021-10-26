@@ -86,7 +86,12 @@ module.exports = ({ env }) => ({
 
 ### API访问
 
-如果安装了`documentation插件`，提供默认的swagger的地址`http://localhost:1337/documentation/`
+如果安装了`documentation插件`，提供默认的swagger的地址`http://localhost:1337/documentation/`，参考相关接口用法
+
+### 发布内容
+
+1. 进入admin后台界面，在对应的`集合类型`里选择相关的类型，进行编辑 ![发布1](strapi_cd.jpg)
+2. 点击要发布记录的`状态`，选择`发布`
 
 ## 参考
 
