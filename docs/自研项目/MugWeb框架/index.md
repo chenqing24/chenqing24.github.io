@@ -4,6 +4,10 @@
 
 基于bottle + peewee的web api框架
 
+## 参考
+
+* GitHub地址 <https://github.com/chenqing24/mug-skeleton>
+
 ## 特性
 
 * 要求Python 3.7
