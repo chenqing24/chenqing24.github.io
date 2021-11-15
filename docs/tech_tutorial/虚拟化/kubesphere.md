@@ -57,21 +57,25 @@
 
 ### 项目部署
 
-1. 创建DB密钥：以`project-regular`用户，访问`demo-project`详情页中的`配置-保密字典`页，点创建`mysql-secret`密钥，旗下配置`默认`类型的kv对`MYSQL_ROOT_PASSWORD`，点✔︎后保存 ![create-secret1](create-secret1.jpg){: style="width:60%"}
-2. 同上，创建`wordpress-secret`，含kv`WORDPRESS_DB_PASSWORD`
-3. 访问`存储-存储卷`，创建名`wordpress-pvc`的local ro卷（10Gi） ![volume1](volume1.jpg){: style="width:60%"}
-4. 创建mysql：`应用负载-应用-自制应用`中创建新应用`wordpress` ![新建自制应用](composing-app1.png){: style="width:60%"}，![基本信息](basic-info.png){: style="width:60%"}，再创建`有状态服务`![添加服务](add-service.png){: style="width:60%"}，![有状态服务](add-service-2.jpg){: style="width:60%"}，![mysql服务](mysqlname.png){: style="width:60%"}
-   1. 向导`容器镜像`中，点击`添加容器镜像`，搜索`mysql:5.7`，点`使用默认端口`
-   2. 勾选环境变量，点`引用配置文件或密钥`，选择上文创建的密钥kv`MYSQL_ROOT_PASSWORD`，并点✔︎保存
-   3. 注意：资源需要限制，不能大于项目自身配额 ![配额](配额.jpg){: style="width:60%"}
-   4. 下一步`添加存储卷` ![volume-template1](volume-template1.png){: style="width:60%"}，并点✔︎保存
-   5. 最后在`高级设置`右下方点`创建`，完成向导
-5. 再添加`无状态服务`应用`wordpress`，流程类似，使用默认端口，环境变量分别引用密钥kv`WORDPRESS_DB_PASSWORD`和添加环境变量`WORDPRESS_DB_HOST` ![environment-varss](environment-varss.png){: style="width:60%"}，并点✔︎保存
-   1. `选择已有存储卷`，挂在`/var/www/html`，点✔︎保存 ![mount-volume-page.png](mount-volume-page.png){: style="width:60%"}
-   2. 下一步`创建`，完成向导
-6. 下一步`路由设置`中，点击`创建`，使用默认规则
-7. `工作负载`页下验证服务: 这里卡住，有状态的mysql一直失败，导致wp不断重启
-8. [TODO]通过 NodePort 访问 WordPress
+以简单的`dockerbogo/docker-nginx-hello-world`为例
+
+1. 创建应用：`应用负载-应用-自制应用`中创建新应用`nginx-hello-world` ![新建自制应用](composing-app1.png){: style="width:60%"}，![基本信息](basic-info.jpg){: style="width:60%"}
+   1. 下一步创建`无状态服务`![添加服务](add-service.png){: style="width:60%"}，![无状态服务](add-service-2.jpg){: style="width:60%"}，![app服务](appname.jpg){: style="width:60%"}
+   2. 向导`容器镜像`中，点击`添加容器镜像`，搜索`dockerbogo/docker-nginx-hello-world`，点`使用默认端口` ![appname-2.jpg](appname-2.jpg){: style="width:60%"}
+   4. 注意：资源需要限制，不能大于项目自身配额 ![配额](配额.jpg){: style="width:60%"}
+   5. 下一步`添加存储卷`忽略
+   6. 在`高级设置`右下方点`创建`，完成向导
+   7. 最后点击`下一步` ![appname-3.jpg](appname-3.jpg){: style="width:60%"}
+   8. `路由设置`中，点击`创建`，使用默认规则
+2. `工作负载`页下验证服务 ![appname-4.jpg](appname-4.jpg){: style="width:60%"}
+3. 通过 NodePort 访问 ![appname-5.jpg](appname-5.jpg){: style="width:60%"}
+   1. 选择 ![access-method.png](access-method.png){: style="width:60%"}，并`确定`
+   2. 进入服务详情页，可以看见暴露的端口 ![appname-6.jpg](appname-6.jpg){: style="width:60%"}
+4. 访问效果 ![appname-over.jpg](appname-over.jpg){: style="width:60%"}
+
+## 踩坑记录
+
+* 尽量不要跑有状态的服务，非常危险：有时候db类应用一旦挂了，数据很难恢复一致；另外v3.2.0的前端js有bug，有状态的服务详情页报错
 
 ## 参考
 
