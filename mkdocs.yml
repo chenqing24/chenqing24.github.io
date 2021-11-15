@@ -8,3 +8,7 @@ theme:
 # nav:
 #   - Home: index.md
 #   - 关于博主: aboutme.md
+
+# 启动插件，支持markdown调整css
+markdown_extensions:
+  - attr_list

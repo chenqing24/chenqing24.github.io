@@ -1,5 +1,12 @@
 # Ubuntu常用设置
 
+## 系统
+
+### 设置时区
+
+1. `tzselect` 按照向导选择`亚洲-中国-北京`
+2. `timedatectl set-timezone "Asia/Shanghai"` 指定显示时区
+
 ## 网络
 
 ### 查询本地DNS
