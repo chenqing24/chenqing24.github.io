@@ -73,9 +73,34 @@
    2. 进入服务详情页，可以看见暴露的端口 ![appname-6.jpg](appname-6.jpg){: style="width:60%"}
 4. 访问效果 ![appname-over.jpg](appname-over.jpg){: style="width:60%"}
 
+### DevOps管理(CI/CD)
+
+前提:
+
+* 已有用户`project-admin`，具有`admin`或`operator`角色 ![ks-devops-admin.jpg](ks-devops-admin.jpg){: style="width:60%"}
+
+#### 凭证管理
+
+* 添加git账号`gitlab-id`，用于读源码repo ![ks-devops-1.jpg](ks-devops-1.jpg){: style="width:60%"}
+* 类似上文，添加docker镜像库账号`dockerhub-id`，用于推送镜像
+* 添加kubeconfig类账号`demo-kubeconfig`，用于部署资源 ![ks-devops-2.jpg](ks-devops-2.jpg){: style="width:60%"}
+* 以上账号要用于应用repo根目录的`Jenkinsfile` ![ks-devops-3.jpg](ks-devops-3.jpg){: style="width:60%"}
+
+#### 建立流水线
+
+1. 进`流水线`点`创建`，输入自定义名称后，选择代码仓库 ![ks-devops-4.jpg](ks-devops-4.jpg){: style="width:60%"}
+2. 选`Git`，填入应用所在git地址，并选择之前创建的git账号凭证，点勾保存 ![ks-devops-5.jpg](ks-devops-5.jpg){: style="width:60%"}
+3. （可选）点`下一步`，在`高级设置`中配置`正则过滤`和`定时扫描`等 ![ks-devops-6.jpg](ks-devops-6.jpg){: style="width:60%"}
+4. 点`创建`完成向导 ![ks-devops-7.jpg](ks-devops-7.jpg){: style="width:60%"}
+5. 进入流水线详情页的`分支`，扫描仓库，如果git账号正确的话，会读取符合正则过滤条件的分支信息，自动开始第一次构建（多半以失败告终）  ![ks-devops-8.jpg](ks-devops-8.jpg){: style="width:60%"}
+6. 进入流水线详情页的`运行记录`，点击记录进入详情页  ![ks-devops-9.jpg](ks-devops-9.jpg){: style="width:60%"} 
+7. 可以点`查看日志`定位问题  ![ks-devops-10.jpg](ks-devops-10.jpg){: style="width:60%"} 
+8. 不断调整，直到流水线正常运行。
+
 ## 踩坑记录
 
 * 尽量不要跑有状态的服务，非常危险：有时候db类应用一旦挂了，数据很难恢复一致；另外v3.2.0的前端js有bug，有状态的服务详情页报错
+* v3.2.0对应的k8s默认api升级，导致相关部署插件过期不可用，参考`https://github.com/kubesphere/website/issues/2096`
 
 ## 参考
 
