@@ -95,7 +95,55 @@
 5. 进入流水线详情页的`分支`，扫描仓库，如果git账号正确的话，会读取符合正则过滤条件的分支信息，自动开始第一次构建（多半以失败告终）  ![ks-devops-8.jpg](ks-devops-8.jpg){: style="width:60%"}
 6. 进入流水线详情页的`运行记录`，点击记录进入详情页  ![ks-devops-9.jpg](ks-devops-9.jpg){: style="width:60%"} 
 7. 可以点`查看日志`定位问题  ![ks-devops-10.jpg](ks-devops-10.jpg){: style="width:60%"} 
-8. 不断调整，直到流水线正常运行。
+8. 不断调整`Jenkinsfile`，直到流水线正常运行。
+
+```js
+pipeline {
+    agent {
+        node {
+            label 'base'
+        }
+    }
+
+    environment {
+        DOCKER_CREDENTIAL_ID = 'dockerhub-id'
+        KUBECONFIG_CREDENTIAL_ID = 'demo-kubeconfig'
+        REGISTRY = 'docker.io'
+        DOCKERHUB_NAMESPACE = 'devops'
+        APP_NAME = 'devops-python-sample'
+    }
+
+    parameters {
+        string(name: 'BRANCH_NAME', defaultValue: 'master', description: '')
+    }
+
+    stages {
+        stage('拉取代码') {
+            steps {
+                checkout(scm)
+            }
+        }
+
+        stage('推送镜像') {
+            steps {
+                container('base') {
+                    withCredentials([usernamePassword(credentialsId : "$DOCKER_CREDENTIAL_ID" ,passwordVariable : 'DOCKER_PASSWORD' ,usernameVariable : 'DOCKER_USERNAME' ,)]) {
+                        sh 'echo "$DOCKER_PASSWORD" | docker login $REGISTRY -u "$DOCKER_USERNAME" --password-stdin'
+                        sh 'docker build -f Dockerfile -t $REGISTRY/$DOCKERHUB_NAMESPACE/$APP_NAME:$BUILD_NUMBER .'
+                        sh 'docker push $REGISTRY/$DOCKERHUB_NAMESPACE/$APP_NAME:$BUILD_NUMBER'
+                    }
+                }
+            }
+        }
+
+        stage('部署') {
+            steps {
+                kubernetesDeploy(configs: 'deploy/**', enableConfigSubstitution: true, kubeconfigId: "$KUBECONFIG_CREDENTIAL_ID")
+            }
+        }
+    }
+}
+```
 
 ## 踩坑记录
 
