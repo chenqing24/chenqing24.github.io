@@ -7,7 +7,7 @@
 3. 可以导入多种云主机（基于代理）
 4. 自带监控（基于prometheus）和日志采集（elk），适合标准化监控快速落地
 5. 自带基于jenkeins的流水线，如果用标准流程较方便，但要自定义模块较麻烦
-6. 没有直接的api，更适用基于helm的gitops
+6. 有api，更适用基于helm的gitops
 
 ## 安装
 
@@ -162,3 +162,4 @@ pipeline {
 ## 参考
 
 * 中文官网 <https://kubesphere.com.cn/>
+* API文档 <https://kubesphere.io/api/kubesphere/>
