@@ -18,6 +18,15 @@ docker run \
 	# --force-new-cluster  # 可选，用于服务异常后的数据恢复
 ```
 
+* --data-dir 数据存储目录，这些数据包括节点ID，集群ID，集群初始化配置，Snapshot文件，若未指定--wal-dir，还会存储WAL文件
+* --name 节点名称
+* --listen-peer-urls 监听URL，用于与其他节点通讯
+* --advertise-client-urls 告知客户端url, 也就是服务的url
+* --initial-advertise-peer-urls 告知集群其他节点url
+* --initial-cluster-token 集群的ID
+* --initial-cluster 集群中所有节点
+* --force-new-cluster 启动一个新的集群
+
 ## 使用
 
 在容器内执行
@@ -51,6 +60,33 @@ docker run -d --name etcdkeeper \
 ```
 
 ![ui效果](etcd_ui.png)
+
+### 数据迁移
+
+1. 停止待迁移节点上的etc进程；
+2. 将数据目录打包复制到新的节点；
+3. 更新该节点对应集群中peer url，让其指向新的节点；
+4. 使用相同的配置，在新的节点上启动etcd进程
+
+```bash
+# 备份
+etcdctl backup --data-dir /etcd-data/ --backup-dir /etcd_backup/
+```
+
+## 常见故障
+
+### 启动时大量报`request sent was ignored (cluster ID mismatch`，节点无法启动
+
+可能原因：节点间通信失败，导致集群无法拉起
+解决方案：
+
+1. 删除data-dir 会丢失原数据，但是节点能启动，再从其他节点同步数据过来
+2. 启动时加参数--force-new-cluster 强制单节点启动，忽略原集群配置，用于保留数据
+
+### 数据导入后为空
+
+可能原因：备份使用V3 API，但是原节点是V2 API在跑。V3的备份db和V2的读wal是不同策略
+解决方案：使用完整的data-dir备份，通过force-new-cluster拉起单节点
 
 ## 参考
 
