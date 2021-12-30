@@ -63,6 +63,9 @@ startretries=10
 redirect_stderr=true
 ; 不要放在yarn项目路径下，log的变化会导致yarn不断重启
 stdout_logfile=/tmp/supervisor-devops-cms.log
+; 如果是python需要指定venv
+; command=/opt/devops-cms/ENV/bin/python /opt/devops-cms/app.py
+; environment=PATH="/opt/devops-cms/ENV/bin:%(ENV_PATH)s"
 ```
 
 * `supervisorctl reload`，加载最新配置
