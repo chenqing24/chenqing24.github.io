@@ -11,13 +11,18 @@
 
 ## 安装和配置
 
+### pip安装
 * `pip install supervisor`以root角色安装
 * `echo_supervisord_conf > /opt/supervisor/supervisord.conf`建议以普通用户创建配置文件，可以灵活编辑扩展
 * `supervisord -u op -c /opt/supervisor/supervisord.conf`以普通用户op启动supervisord，读取指定配置
 
+### 原生安装
+
+* Ubuntu: `apt install supervisor`
+
 ### 开机启动supervisord
 
-以CentOS为例
+#### CentOS的systemd
 
 * 新建文件supervisord.service
 
@@ -42,6 +47,25 @@ WantedBy=multi-user.target
 * `chmod 766 supervisord.service`权限设定
 * `systemctl enable supervisord`启动服务
 * `systemctl is-enabled supervisord`验证是否为开机启动
+
+#### Ubuntu的原生安装
+
+* `cd /etc/supervisor/conf.d`，按对应的项目进程，建立自己的conf
+
+```conf
+; devops-cms.conf
+[program:devops-cms]
+directory   =/opt/devops-cms
+command     =yarn develop
+autostart   =true
+autorestart =true
+startretries=10
+redirect_stderr=true
+; 不要放在yarn项目路径下，log的变化会导致yarn不断重启
+stdout_logfile=/tmp/supervisor-devops-cms.log
+```
+
+* `supervisorctl reload`，加载最新配置
 
 ## 常用cli
 

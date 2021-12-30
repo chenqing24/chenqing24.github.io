@@ -2,6 +2,8 @@
 
 ## 文章一览
 
+* 2021-12-30
+  > * [Supervisord 后台进程管理](tech_tutorial/linux工具/supervisor.md)
 * 2021-12-23
   > * [监控体系概要](业务方案/监控告警/monitoring_system_summary.md)
 * 2021-11-29
