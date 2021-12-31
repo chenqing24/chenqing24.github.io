@@ -2,6 +2,8 @@
 
 ## 文章一览
 
+* 2021-12-31
+  > * [Tmux简介](tech_tutorial/linux工具/tmux.md)
 * 2021-12-30
   > * [Supervisord 后台进程管理](tech_tutorial/linux工具/supervisor.md)
 * 2021-12-23
