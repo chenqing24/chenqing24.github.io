@@ -7,12 +7,16 @@
 1. `tzselect` 按照向导选择`亚洲-中国-北京`
 2. `timedatectl set-timezone "Asia/Shanghai"` 指定显示时区
 
+### 更换hostname
+
+`vim /etc/hostname`
+
 ## 网络
 
 ### 查询本地DNS
 
 1. `cat /etc/resolv.conf`
-2. `netlookup www.baidu.com`的第一行的server的IP
+2. `nslookup www.baidu.com`的第一行的server的IP
 ![ubuntu_dns](ubuntu_dns.jpg)
 
 ### 查看Gateway
