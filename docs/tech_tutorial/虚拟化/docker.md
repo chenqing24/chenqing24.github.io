@@ -14,3 +14,20 @@ systemctl enable docker
 ```
 
 ![docker](docker.png)
+
+## 使用
+
+### 限制log
+
+```bash
+docker run -d \
+    --log-opt max-size=10m \
+    --log-opt max-file=3 \
+    image名
+```
+
+一键清理<none>镜像 ``` docker rmi -f  `docker images | grep '<none>' | awk '{print $3}'` ```
+
+### 强制重建docker-compose中指定服务
+
+`docker-compose up --force-recreate --no-deps service-name`
