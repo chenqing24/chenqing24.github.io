@@ -2,6 +2,8 @@
 
 ## 文章一览
 
+* 2022-1-25
+  > * [Gitlab代码版本管理](业务方案/CICD/gitlab.md)
 * 2022-1-18
   > * [ossftp存储服务](tech_tutorial/云原生/ossftp.md)
 * 2021-12-31

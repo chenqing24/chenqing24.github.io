@@ -63,6 +63,7 @@ gitlab-backup restore BACKUP=1643099038_2022_01_25_13.6.3-ee
 
 4. 退出容器后，重启gitlab
 5. 验证服务恢复 `docker exec -it gitlab gitlab-rake gitlab:check SANITIZE=true` ![gitlab_restor_check](gitlab_restor_check.jpg)
+6. 验证2：本地hosts里指定新主机ip和域名，尝试访问
 
 ## 参考
 
