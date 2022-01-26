@@ -65,6 +65,17 @@ gitlab-backup restore BACKUP=1643099038_2022_01_25_13.6.3-ee
 5. 验证服务恢复 `docker exec -it gitlab gitlab-rake gitlab:check SANITIZE=true` ![gitlab_restor_check](gitlab_restor_check.jpg)
 6. 验证2：本地hosts里指定新主机ip和域名，尝试访问
 
+暴力版：
+
+```bash
+# 停docker，备份，直接把data打包，生成类似：gitback-2019-04-18.tar.gz
+tar -zcvf /backup/data/gitback-${DATE}.tar.gz -C /data/
+
+# 恢复，再重启docker
+tar -xf gitback-2019-04-18.tar.gz -C /data/
+docker-compose up -d
+```
+
 ## 参考
 
 * 官网文档 <https://docs.gitlab.com/>
