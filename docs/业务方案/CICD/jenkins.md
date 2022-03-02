@@ -13,7 +13,8 @@ mkdir -p /data/jenkins
 docker run \
 	--name=go_jenkins \
 	--user=root \
-	--volume=/data/jenkins:/var/jenkins_home \
+	-v /data/jenkins:/var/jenkins_home \
+    -v /etc/localtime:/etc/localtime \
 	-p 8080:8080 \
 	--restart=always \
 	-d jenkins/jenkins:2.238
@@ -54,6 +55,10 @@ cat /data/jenkins/secrets/initialAdminPassword
   * Gitlab API
 * webhook相关:
   * Generic Webhook Trigger
+* 传包
+  * Publish Over SSH
+* 备份
+  * ThinBackup
 
 ### 集成gitlab
 
@@ -62,6 +67,20 @@ cat /data/jenkins/secrets/initialAdminPassword
    1. 在gitlab的 `用户设置 -> 访问令牌`里生成token ![gitlab_token.jpg](gitlab_token.jpg)
 3. 连接测试后保存 ![jks_conf_3.jpg](jks_conf_3.jpg)
    1. 由于墙的原因，建议在jenkins实例里提前安装go
+
+### 配置ssh推送服务
+
+1. 在jenkins实例中生成ssh-key
+2. 公钥加入包库所在主机指定用户（建议非root）的`authorized_keys`
+3. 在`Jenkins -> 系统配置`下配置`Publish over SSH` ![jks_conf_ssh.jpg](jks_conf_ssh.jpg)
+4. 在pipeline中的使用 ![jks_conf_ssh_pipeline.jpg](jks_conf_ssh_pipeline.jpg)
+
+### 配置邮件发送
+
+以阿里云邮件服务为例
+
+* 在`系统配置 -> 邮件通知`配置 ![jks_conf_mail.jpg](jks_conf_mail.jpg)
+* 注意：阿里云邮件服务要求填`Mail From`，在插件中是找不到地方配置的，实际使用的当前用户的邮件地址 ![jks_conf_mail_2.jpg](jks_conf_mail_2.jpg)
 
 ### 安装go编译环境
 
@@ -77,6 +96,14 @@ cat /data/jenkins/secrets/initialAdminPassword
 ### 定时任务
 
 ### 集成docker
+
+### 数据迁移
+
+其实核心是备份`jenkins_home`，也可使用插件`ThinBackup`
+
+1. `ThinBackup`设置 ![jks_backup_setup.jpg](jks_backup_setup.jpg)
+2. 将导出的备份目录，复制解压到目标jenkins的`jenkins_home`下 ![jks_backup_2.jpg](jks_backup_2.jpg)
+3. 
 
 ## 参考
 
