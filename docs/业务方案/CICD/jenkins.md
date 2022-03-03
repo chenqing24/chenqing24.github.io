@@ -87,10 +87,80 @@ cat /data/jenkins/secrets/initialAdminPassword
 1. `管理Jenkins -> 插件管理`里安装'Go plugin'
 2. `管理Jenkins -> 全局工具配置`里'新增 Go' ![jks_conf_go.jpg](jks_conf_go.jpg)
 
+```js
+// 以某个go应用编译为例
+pipeline {
+    agent any
+    
+    tools {
+        // env setup，在全局设置中的go环境名
+        go 'go1.16'
+    }
+
+    environment {
+        // 当前ws用环境变量
+        GOPATH = "${JENKINS_HOME}/jobs/${JOB_NAME}/builds/${BUILD_ID}"
+    }
+    
+    stages {
+        stage('Clone') {
+            steps {
+                echo '1.Clone Stage'
+                git credentialsId: 'chenqing', url: 'https://gitlab.xxx.com/my-group/go-api.git'
+                // 显示提交的最后2条git记录
+                sh 'git log -2'
+                script {
+                    // get last commit hash
+        			build_commit = sh (script: 'git rev-parse --short HEAD', returnStdout: true).trim()
+        		}  
+            }
+        }
+        stage('Build') {
+            steps {
+                echo "2.Build Stage"
+                // 执行编译动作，根据实际生成
+                sh 'make build'
+            }
+        }
+        stage('Make Tar') {
+            steps {
+                echo "3.Make Tar Stage"
+                // go-api是编译完成果，计算md5，并打包
+                sh 'md5sum go-api > go-api.md5'
+                sh 'tar -cPf ${JOB_NAME}_${BUILD_NUMBER}.tar go-api go-api.md5'
+            }
+        }
+        stage('cp to package repo') {
+            steps {
+                echo "4.cp to package repo"
+                // package.com是包库的ssh地址，按应用名分目录存储
+                sh 'ssh root@package.com mkdir -p /mnt/package/repo/${JOB_NAME}'
+                sh 'scp ${JOB_NAME}_${BUILD_NUMBER}.tar root@package.com:/mnt/package/repo/${JOB_NAME}/${JOB_NAME}_${BUILD_NUMBER}.tar'
+            }
+        }
+        stage('Clear Workspace') {
+            steps {
+                echo '9.Clear Workspace'
+                cleanWs()
+            }
+        }
+    }
+    post {
+        always {
+            // 邮件通知结果
+            emailext body: "${currentBuild.currentResult}: Job ${env.JOB_NAME} build ${env.BUILD_NUMBER}\n More info at: ${env.BUILD_URL}",
+                to: "admin@163.cn",
+                subject: "Jenkins Build ${currentBuild.currentResult}: Job ${env.JOB_NAME}"
+            
+        }
+    }
+}
+```
+
 ### pipeline
 
-1. 进入`新建Item`，输入新任务名，选择`多分支流水线`后，确定
-2. 在`分支源`中添加git仓库，输入远程git地址
+1. 进入`新建Item`，输入新任务名，选择`流水线`后，确定
+2. 在`流水线`脚本中写相关code
 3. 
 
 ### 定时任务
@@ -103,7 +173,20 @@ cat /data/jenkins/secrets/initialAdminPassword
 
 1. `ThinBackup`设置 ![jks_backup_setup.jpg](jks_backup_setup.jpg)
 2. 将导出的备份目录，复制解压到目标jenkins的`jenkins_home`下 ![jks_backup_2.jpg](jks_backup_2.jpg)
-3. 
+3. 重启Jenkins，注意尽量保持版本一直，否则load任务和plugin可能会失败
+
+### 扩展slave节点
+
+1. `管理Jenkins -> 节点管理`中'新建节点'
+2. 配置相关信息，并保存 ![jks_slave.jpg](jks_slave.jpg)
+3. `节点列表`中点击刚才新建的节点，确认启动命令和下载jar包 ![jks_slave2.jpg](jks_slave2.jpg)
+4. 在slave主机上安装java，如 `apt install default-jre`
+5. 上传jar，并使用上文的命令启动 ![jks_slave3.jpg](jks_slave3.jpg)
+6. 访问`节点列表`，确认节点接入 ![jks_slave_over.jpg](jks_slave_over.jpg)
+7. 可选：slave上使用supervisor开机启动jar
+8. 注意：
+   1. master上依赖的环境在slave上要部署在同目录，如go，ssh-key等
+   2. 建议agent.jar放在用户目录下，因为需要读sh环境变量（.bashrc）
 
 ## 参考
 
