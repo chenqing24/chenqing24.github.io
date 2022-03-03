@@ -87,6 +87,11 @@ cat /data/jenkins/secrets/initialAdminPassword
 1. `管理Jenkins -> 插件管理`里安装'Go plugin'
 2. `管理Jenkins -> 全局工具配置`里'新增 Go' ![jks_conf_go.jpg](jks_conf_go.jpg)
 
+### pipeline
+
+1. 进入`新建Item`，输入新任务名，选择`流水线`后，确定
+2. 在`流水线`脚本中写相关code
+
 ```js
 // 以某个go应用编译为例
 pipeline {
@@ -157,11 +162,10 @@ pipeline {
 }
 ```
 
-### pipeline
+### 第三方通过API调用
 
-1. 进入`新建Item`，输入新任务名，选择`流水线`后，确定
-2. 在`流水线`脚本中写相关code
-3. 
+1. 在当前用户的设置页面，添加API Token ![jks_api_token.jpg](jks_api_token.jpg)
+2. 通过Post发送请求 `curl --location --request POST 'http://{用户名}:{上文生成的Token}@{jenkins域名或IP:Port}/job/{唯一项目名}/build'`
 
 ### 定时任务
 
