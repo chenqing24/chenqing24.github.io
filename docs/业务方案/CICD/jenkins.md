@@ -1,6 +1,6 @@
 # Jenkins实用手册
 
-* 版本 2.238
+* 版本 2.336
 * 在Ubuntu 18 上测试通过
 
 ## 安装
@@ -17,7 +17,7 @@ docker run \
     -v /etc/localtime:/etc/localtime \
 	-p 8080:8080 \
 	--restart=always \
-	-d jenkins/jenkins:2.238
+	-d jenkins/jenkins:2.336
 
 # 显示安装用的admin密码
 cat /data/jenkins/secrets/initialAdminPassword
@@ -166,6 +166,7 @@ pipeline {
 
 1. 在当前用户的设置页面，添加API Token ![jks_api_token.jpg](jks_api_token.jpg)
 2. 通过Post发送请求 `curl --location --request POST 'http://{用户名}:{上文生成的Token}@{jenkins域名或IP:Port}/job/{唯一项目名}/build'`
+3. 注意：`Error 403: No valid crumb was included in the request`的解决方案和Jenkins版本有关，我的方案在v2.336上测试通过
 
 ### 定时任务
 
