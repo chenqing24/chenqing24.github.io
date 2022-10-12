@@ -27,6 +27,22 @@ docker run \
 * --initial-cluster 集群中所有节点
 * --force-new-cluster 启动一个新的集群
 
+### 集群
+
+1. etcd01: 10.0.1.10
+2. etcd02: 10.0.1.11
+3. etcd03: 10.0.1.12
+
+```bash
+$ etcd --name etcd01 --initial-advertise-peer-urls http://10.0.1.10:2380 \
+  --listen-peer-urls http://10.0.1.10:2380 \
+  --listen-client-urls http://10.0.1.10:2379,http://127.0.0.1:2379 \
+  --advertise-client-urls http://10.0.1.10:2379 \
+  --initial-cluster-token etcd-cluster-1 \
+  --initial-cluster etcd01=http://10.0.1.10:2380,etcd02=http://10.0.1.11:2380,etcd03=http://10.0.1.12:2380 \
+  --initial-cluster-state new
+```
+
 ## 使用
 
 在容器内执行
