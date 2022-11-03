@@ -44,5 +44,6 @@ set -g @plugin 'tmux-plugins/tmux-resurrect'
 run '~/.tmux/plugins/tpm/tpm'
 ```
 3. 在Tmux里重新加载配置 `tmux source ~/.tmux.conf`
-4. `激活键 ctrl+s` 保存当前session
-5. `激活键 ctrl+r` reload上一次保存的session
+4. 在Tmux中使用快捷prefix + I安装配置
+5. `激活键 ctrl+s` 保存当前session
+6. `激活键 ctrl+r` reload上一次保存的session
