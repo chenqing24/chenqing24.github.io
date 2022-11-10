@@ -14,6 +14,8 @@
 * `du -s * | sort -nr | head`选出文件夹大小，并按大小进行排序，前面的10个
 * ```watch -n 60 -d 'ls -l -rt | tail'```找到当前目录最新的10个文件，1分钟刷新一次
 * `dd if=/dev/zero of=test bs=1M count=10000 oflag=direct`测试磁盘IO，写test,1个M一次，10000次，采用直接IO方式
+* `find . -name '*.tmp' ! -newermt '5 day ago'` 找当前路径下.tmp后缀名，5天以前创建的
+* `tree -L 2` 树形展示2层目录
 
 ## 快速执行
 
