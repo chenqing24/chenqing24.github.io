@@ -2,6 +2,8 @@
 
 ## 文章一览
 
+* 2022-11-29 
+  > [NVM node版本管理工具](tech_tutorial/js库/nvm.md)
 * 2022-03-02
   > [Jenkins实用手册](业务方案/CICD/jenkins.md) 
 * 2022-1-25
