@@ -1,0 +1,1399 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    
+    
+    
+    <link rel="shortcut icon" href="../../../img/favicon.ico">
+
+    
+    <title>ELK集群安装配置手册（Docker版） - Jeff.Chen的技术博客</title>
+    
+
+    <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.12.0/css/all.css">
+    <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.12.0/css/v4-shims.css">
+    <link rel="stylesheet" href="//cdn.jsdelivr.net/npm/hack-font@3.3.0/build/web/hack.min.css">
+    <link href='//rsms.me/inter/inter.css' rel='stylesheet' type='text/css'>
+    <link href='//fonts.googleapis.com/css?family=Open+Sans:300italic,400italic,700italic,400,300,600,700&subset=latin-ext,latin' rel='stylesheet' type='text/css'>
+    <link href="../../../css/bootstrap-custom.min.css" rel="stylesheet">
+    <link href="../../../css/base.min.css" rel="stylesheet">
+    <link href="../../../css/cinder.min.css" rel="stylesheet">
+
+    
+        
+        <link rel="stylesheet" href="//cdn.jsdelivr.net/gh/highlightjs/cdn-release@9.18.0/build/styles/github.min.css">
+        
+    
+
+    <!-- HTML5 shim and Respond.js IE8 support of HTML5 elements and media queries -->
+    <!--[if lt IE 9]>
+            <script src="https://cdn.jsdelivr.net/npm/html5shiv@3.7.3/dist/html5shiv.min.js"></script>
+            <script src="https://cdn.jsdelivr.net/npm/respond.js@1.4.2/dest/respond.min.js"></script>
+        <![endif]-->
+
+    
+
+     
+</head>
+
+<body>
+
+    <div class="navbar navbar-default navbar-fixed-top" role="navigation">
+    <div class="container">
+
+        <!-- Collapsed navigation -->
+        <div class="navbar-header">
+            <!-- Expander button -->
+            <button type="button" class="navbar-toggle" data-toggle="collapse" data-target=".navbar-collapse">
+                <span class="sr-only">Toggle navigation</span>
+                <span class="icon-bar"></span>
+                <span class="icon-bar"></span>
+                <span class="icon-bar"></span>
+            </button>
+            
+
+            <!-- Main title -->
+
+            
+              <a class="navbar-brand" href="../../..">Jeff.Chen的技术博客</a>
+            
+        </div>
+
+        <!-- Expanded navigation -->
+        <div class="navbar-collapse collapse">
+                <!-- Main navigation -->
+                <ul class="nav navbar-nav">
+                
+                
+                    <li >
+                        <a href="../../..">首页</a>
+                    </li>
+                
+                
+                
+                    <li >
+                        <a href="../../../aboutme/">关于博主</a>
+                    </li>
+                
+                
+                
+                    <li class="dropdown">
+                        <a href="#" class="dropdown-toggle" data-toggle="dropdown">Tech tutorial <b class="caret"></b></a>
+                        <ul class="dropdown-menu">
+                        
+                            
+<li >
+    <a href="../../../tech_tutorial/gitbook/">GitBook</a>
+</li>
+
+                        
+                            
+<li >
+    <a href="../../../tech_tutorial/markdown/">Markdown常用语法</a>
+</li>
+
+                        
+                            
+<li >
+    <a href="../../../tech_tutorial/mkdocs/">MkDocs 静态网站生成</a>
+</li>
+
+                        
+                            
+<li >
+    <a href="../../../tech_tutorial/svn/">SVN 版本管理</a>
+</li>
+
+                        
+                            
+<li >
+    <a href="../../../tech_tutorial/yapi/">YApi 可视化接口管理平台</a>
+</li>
+
+                        
+                            
+  <li class="dropdown-submenu">
+    <a tabindex="-1" href="">DB</a>
+    <ul class="dropdown-menu">
+        
+            
+<li >
+    <a href="../../../tech_tutorial/DB/adminer/">Adminer 单php的db管理系统</a>
+</li>
+
+        
+            
+<li >
+    <a href="../../../tech_tutorial/DB/etcd/">Etcd 分布式KV数据库</a>
+</li>
+
+        
+            
+<li >
+    <a href="../../../tech_tutorial/DB/ldap/">OpenLDAP简介</a>
+</li>
+
+        
+            
+<li >
+    <a href="../../../tech_tutorial/DB/mongo/">MongoDB 简明使用手册</a>
+</li>
+
+        
+            
+<li >
+    <a href="../../../tech_tutorial/DB/mysql/">MySQL 数据库常用手册</a>
+</li>
+
+        
+            
+<li >
+    <a href="../../../tech_tutorial/DB/redis/">Redis 使用手册</a>
+</li>
+
+        
+    </ul>
+  </li>
+
+                        
+                            
+  <li class="dropdown-submenu">
+    <a tabindex="-1" href="">Js库</a>
+    <ul class="dropdown-menu">
+        
+            
+<li >
+    <a href="../../../tech_tutorial/js%E5%BA%93/backbone/">Backbone.js 前端MVC框架</a>
+</li>
+
+        
+            
+<li >
+    <a href="../../../tech_tutorial/js%E5%BA%93/iview-admin/">基于Vue的后台管理系统前端UI方案</a>
+</li>
+
+        
+            
+<li >
+    <a href="../../../tech_tutorial/js%E5%BA%93/nvm/">nvm Node版本管理工具</a>
+</li>
+
+        
+    </ul>
+  </li>
+
+                        
+                            
+  <li class="dropdown-submenu">
+    <a tabindex="-1" href="">Jvm系</a>
+    <ul class="dropdown-menu">
+        
+            
+<li >
+    <a href="../../../tech_tutorial/jvm%E7%B3%BB/jvm%E5%86%85%E5%AD%98%E6%9C%BA%E5%88%B6%E5%92%8C%E5%9E%83%E5%9C%BE%E5%9B%9E%E6%94%B6gc/">JVM内存机制和垃圾回收GC</a>
+</li>
+
+        
+    </ul>
+  </li>
+
+                        
+                            
+  <li class="dropdown-submenu">
+    <a tabindex="-1" href="">Linux工具</a>
+    <ul class="dropdown-menu">
+        
+            
+<li >
+    <a href="../../../tech_tutorial/linux%E5%B7%A5%E5%85%B7/data_mount/">挂载data盘</a>
+</li>
+
+        
+            
+<li >
+    <a href="../../../tech_tutorial/linux%E5%B7%A5%E5%85%B7/kernel/">linux内核</a>
+</li>
+
+        
+            
+<li >
+    <a href="../../../tech_tutorial/linux%E5%B7%A5%E5%85%B7/mutt/">Mutt 命令行邮件客户端</a>
+</li>
+
+        
+            
+<li >
+    <a href="../../../tech_tutorial/linux%E5%B7%A5%E5%85%B7/netrc/">.netrc 免密登入</a>
+</li>
+
+        
+            
+<li >
+    <a href="../../../tech_tutorial/linux%E5%B7%A5%E5%85%B7/ops_bash/">常用运维命令</a>
+</li>
+
+        
+            
+<li >
+    <a href="../../../tech_tutorial/linux%E5%B7%A5%E5%85%B7/rsyslog/">Rsyslog 系统日志</a>
+</li>
+
+        
+            
+<li >
+    <a href="../../../tech_tutorial/linux%E5%B7%A5%E5%85%B7/smtp_docker/">使用Docker搭建SMTP服务器</a>
+</li>
+
+        
+            
+<li >
+    <a href="../../../tech_tutorial/linux%E5%B7%A5%E5%85%B7/supervisor/">supervisord后台进程管理</a>
+</li>
+
+        
+            
+<li >
+    <a href="../../../tech_tutorial/linux%E5%B7%A5%E5%85%B7/tmux/">Tmux简介</a>
+</li>
+
+        
+            
+<li >
+    <a href="../../../tech_tutorial/linux%E5%B7%A5%E5%85%B7/ubuntu/">Ubuntu常用设置</a>
+</li>
+
+        
+            
+<li >
+    <a href="../../../tech_tutorial/linux%E5%B7%A5%E5%85%B7/vim/">Vim编辑器 常用方法</a>
+</li>
+
+        
+    </ul>
+  </li>
+
+                        
+                            
+  <li class="dropdown-submenu">
+    <a tabindex="-1" href="">Project manage</a>
+    <ul class="dropdown-menu">
+        
+            
+<li >
+    <a href="../../../tech_tutorial/project_manage/wekan/">Wekan 敏捷看板</a>
+</li>
+
+        
+    </ul>
+  </li>
+
+                        
+                            
+  <li class="dropdown-submenu">
+    <a tabindex="-1" href="">Py库</a>
+    <ul class="dropdown-menu">
+        
+            
+<li >
+    <a href="../../../tech_tutorial/py%E5%BA%93/json-logic-py/">json-logic-py 基于json的逻辑引擎</a>
+</li>
+
+        
+            
+<li >
+    <a href="../../../tech_tutorial/py%E5%BA%93/peewee/">Peewee python的ORM框架</a>
+</li>
+
+        
+            
+<li >
+    <a href="../../../tech_tutorial/py%E5%BA%93/pip/">pip使用指南</a>
+</li>
+
+        
+            
+<li >
+    <a href="../../../tech_tutorial/py%E5%BA%93/spiff_workflow/">SpiffWorkflow 工作流引擎</a>
+</li>
+
+        
+    </ul>
+  </li>
+
+                        
+                            
+  <li class="dropdown-submenu">
+    <a tabindex="-1" href="">Web脚手架</a>
+    <ul class="dropdown-menu">
+        
+            
+<li >
+    <a href="../../../tech_tutorial/web%E8%84%9A%E6%89%8B%E6%9E%B6/bottle_rest/">Bottle Rest Web脚手架</a>
+</li>
+
+        
+            
+<li >
+    <a href="../../../tech_tutorial/web%E8%84%9A%E6%89%8B%E6%9E%B6/flask_rest/">Flask Restful Web微服务</a>
+</li>
+
+        
+    </ul>
+  </li>
+
+                        
+                            
+  <li class="dropdown-submenu">
+    <a tabindex="-1" href="">Workflow</a>
+    <ul class="dropdown-menu">
+        
+            
+<li >
+    <a href="../../../tech_tutorial/workflow/activiti/">Activiti</a>
+</li>
+
+        
+            
+<li >
+    <a href="../../../tech_tutorial/workflow/bpmn/">BPMN 2.0 简介</a>
+</li>
+
+        
+            
+<li >
+    <a href="../../../tech_tutorial/workflow/jsonlogic/">JsonLogic 基于json的规则引擎</a>
+</li>
+
+        
+    </ul>
+  </li>
+
+                        
+                            
+  <li class="dropdown-submenu">
+    <a tabindex="-1" href="">中间件</a>
+    <ul class="dropdown-menu">
+        
+            
+<li >
+    <a href="../../../tech_tutorial/%E4%B8%AD%E9%97%B4%E4%BB%B6/apisix/">APISix API网关</a>
+</li>
+
+        
+            
+<li >
+    <a href="../../../tech_tutorial/%E4%B8%AD%E9%97%B4%E4%BB%B6/confd/">Confd 服务配置中心</a>
+</li>
+
+        
+            
+<li >
+    <a href="../../../tech_tutorial/%E4%B8%AD%E9%97%B4%E4%BB%B6/kafka/">Kafka集群安装配置手册（Docker版）</a>
+</li>
+
+        
+            
+<li >
+    <a href="../../../tech_tutorial/%E4%B8%AD%E9%97%B4%E4%BB%B6/nginx/">Nginx 反向代理Web服务器</a>
+</li>
+
+        
+            
+<li >
+    <a href="../../../tech_tutorial/%E4%B8%AD%E9%97%B4%E4%BB%B6/rabbitmq/">RabbitMQ消息中间件</a>
+</li>
+
+        
+            
+<li >
+    <a href="../../../tech_tutorial/%E4%B8%AD%E9%97%B4%E4%BB%B6/rocketmq/">RocketMQ 分布式MQ和流平台</a>
+</li>
+
+        
+    </ul>
+  </li>
+
+                        
+                            
+  <li class="dropdown-submenu">
+    <a tabindex="-1" href="">云原生</a>
+    <ul class="dropdown-menu">
+        
+            
+<li >
+    <a href="../../../tech_tutorial/%E4%BA%91%E5%8E%9F%E7%94%9F/acr/">Alibaba Cloud Container Registry(ACR) 阿里云容器镜像服务</a>
+</li>
+
+        
+            
+<li >
+    <a href="../../../tech_tutorial/%E4%BA%91%E5%8E%9F%E7%94%9F/ossftp/">ossftp 基于阿里云对象存储的FTP服务</a>
+</li>
+
+        
+            
+<li >
+    <a href="../../../tech_tutorial/%E4%BA%91%E5%8E%9F%E7%94%9F/ossutil/">ossutil 阿里云对象存储工具</a>
+</li>
+
+        
+            
+<li >
+    <a href="../../../tech_tutorial/%E4%BA%91%E5%8E%9F%E7%94%9F/seafile/">Seafile 开源网盘</a>
+</li>
+
+        
+    </ul>
+  </li>
+
+                        
+                            
+  <li class="dropdown-submenu">
+    <a tabindex="-1" href="">大数据</a>
+    <ul class="dropdown-menu">
+        
+            
+<li >
+    <a href="../../../tech_tutorial/%E5%A4%A7%E6%95%B0%E6%8D%AE/cdh_install/">Cloudera Distribution Hadoop（CDH）安装教程</a>
+</li>
+
+        
+    </ul>
+  </li>
+
+                        
+                            
+  <li class="dropdown-submenu">
+    <a tabindex="-1" href="">常用软件</a>
+    <ul class="dropdown-menu">
+        
+            
+<li >
+    <a href="../../../tech_tutorial/%E5%B8%B8%E7%94%A8%E8%BD%AF%E4%BB%B6/chrome/">Chrome浏览器</a>
+</li>
+
+        
+            
+<li >
+    <a href="../../../tech_tutorial/%E5%B8%B8%E7%94%A8%E8%BD%AF%E4%BB%B6/cloudnote/">云笔记方案</a>
+</li>
+
+        
+            
+<li >
+    <a href="../../../tech_tutorial/%E5%B8%B8%E7%94%A8%E8%BD%AF%E4%BB%B6/git_rel/">Git使用相关</a>
+</li>
+
+        
+            
+<li >
+    <a href="../../../tech_tutorial/%E5%B8%B8%E7%94%A8%E8%BD%AF%E4%BB%B6/mrdoc/">MrDoc 觅思文档 （语雀的平替）</a>
+</li>
+
+        
+    </ul>
+  </li>
+
+                        
+                            
+  <li class="dropdown-submenu">
+    <a tabindex="-1" href="">虚拟化</a>
+    <ul class="dropdown-menu">
+        
+            
+<li >
+    <a href="../../../tech_tutorial/%E8%99%9A%E6%8B%9F%E5%8C%96/docker/">Docker容器</a>
+</li>
+
+        
+            
+<li >
+    <a href="../../../tech_tutorial/%E8%99%9A%E6%8B%9F%E5%8C%96/kubesphere/">KubeSphere 容器平台</a>
+</li>
+
+        
+            
+  <li class="dropdown-submenu">
+    <a tabindex="-1" href="">K8s</a>
+    <ul class="dropdown-menu">
+        
+            
+<li >
+    <a href="../../../tech_tutorial/%E8%99%9A%E6%8B%9F%E5%8C%96/k8s/minikube/">Minikube简要教程</a>
+</li>
+
+        
+    </ul>
+  </li>
+
+        
+            
+  <li class="dropdown-submenu">
+    <a tabindex="-1" href="">Pve</a>
+    <ul class="dropdown-menu">
+        
+            
+<li >
+    <a href="../../../tech_tutorial/%E8%99%9A%E6%8B%9F%E5%8C%96/pve/">PVE常见运维流程</a>
+</li>
+
+        
+    </ul>
+  </li>
+
+        
+    </ul>
+  </li>
+
+                        
+                            
+  <li class="dropdown-submenu">
+    <a tabindex="-1" href="">质量测试</a>
+    <ul class="dropdown-menu">
+        
+            
+<li >
+    <a href="../../../tech_tutorial/%E8%B4%A8%E9%87%8F%E6%B5%8B%E8%AF%95/postwoman/">Postwoman API管理</a>
+</li>
+
+        
+    </ul>
+  </li>
+
+                        
+                        </ul>
+                    </li>
+                
+                
+                
+                    <li class="dropdown active">
+                        <a href="#" class="dropdown-toggle" data-toggle="dropdown">业务方案 <b class="caret"></b></a>
+                        <ul class="dropdown-menu">
+                        
+                            
+  <li class="dropdown-submenu">
+    <a tabindex="-1" href="">CICD</a>
+    <ul class="dropdown-menu">
+        
+            
+<li >
+    <a href="../../CICD/cmdbuild/">CMDBuild配置管理平台</a>
+</li>
+
+        
+            
+<li >
+    <a href="../../CICD/gitlab/">Gitlab版本管理</a>
+</li>
+
+        
+            
+<li >
+    <a href="../../CICD/jenkins/">Jenkins实用手册</a>
+</li>
+
+        
+            
+<li >
+    <a href="../../CICD/redmine/">Redmine需求管理平台</a>
+</li>
+
+        
+    </ul>
+  </li>
+
+                        
+                            
+  <li class="dropdown-submenu">
+    <a tabindex="-1" href="">Chatops</a>
+    <ul class="dropdown-menu">
+        
+            
+<li >
+    <a href="../../chatops/">ChatOps方案概述</a>
+</li>
+
+        
+            
+<li >
+    <a href="../../chatops/inspircd/">inspircd IRC服务</a>
+</li>
+
+        
+    </ul>
+  </li>
+
+                        
+                            
+  <li class="dropdown-submenu">
+    <a tabindex="-1" href="">Monitor system</a>
+    <ul class="dropdown-menu">
+        
+            
+<li >
+    <a href="../../monitor_system/">简介</a>
+</li>
+
+        
+            
+<li >
+    <a href="../../monitor_system/alarm/">告警服务</a>
+</li>
+
+        
+            
+<li >
+    <a href="../../monitor_system/env_build/">Env build</a>
+</li>
+
+        
+            
+<li >
+    <a href="../../monitor_system/monitor/">监控体系</a>
+</li>
+
+        
+            
+<li >
+    <a href="../../monitor_system/ops_interview/">常见运维面试题目</a>
+</li>
+
+        
+    </ul>
+  </li>
+
+                        
+                            
+  <li class="dropdown-submenu">
+    <a tabindex="-1" href="">任务调度</a>
+    <ul class="dropdown-menu">
+        
+            
+<li >
+    <a href="../../%E4%BB%BB%E5%8A%A1%E8%B0%83%E5%BA%A6/task_scheduling/">任务调度系统调研</a>
+</li>
+
+        
+    </ul>
+  </li>
+
+                        
+                            
+  <li class="dropdown-submenu">
+    <a tabindex="-1" href="">内容管理</a>
+    <ul class="dropdown-menu">
+        
+            
+<li >
+    <a href="../../%E5%86%85%E5%AE%B9%E7%AE%A1%E7%90%86/headless-cms/">无头CMS - Strapi</a>
+</li>
+
+        
+    </ul>
+  </li>
+
+                        
+                            
+  <li class="dropdown-submenu">
+    <a tabindex="-1" href="">前端框架</a>
+    <ul class="dropdown-menu">
+        
+            
+<li >
+    <a href="../../%E5%89%8D%E7%AB%AF%E6%A1%86%E6%9E%B6/coreui-free-vue-admin-template/">基于CoreUI Free Vue Bootstrap Admin的改造模板</a>
+</li>
+
+        
+    </ul>
+  </li>
+
+                        
+                            
+  <li class="dropdown-submenu">
+    <a tabindex="-1" href="">批量部署</a>
+    <ul class="dropdown-menu">
+        
+            
+<li >
+    <a href="../../%E6%89%B9%E9%87%8F%E9%83%A8%E7%BD%B2/ansible/">Ansible自动化部署工具</a>
+</li>
+
+        
+    </ul>
+  </li>
+
+                        
+                            
+  <li class="dropdown-submenu">
+    <a tabindex="-1" href="">权限管控</a>
+    <ul class="dropdown-menu">
+        
+            
+<li >
+    <a href="../../%E6%9D%83%E9%99%90%E7%AE%A1%E6%8E%A7/api_gateway_auth/">基于API网关的用户权限管理服务</a>
+</li>
+
+        
+            
+<li >
+    <a href="../../%E6%9D%83%E9%99%90%E7%AE%A1%E6%8E%A7/casbin/">Casbin 访问控制框架</a>
+</li>
+
+        
+            
+<li >
+    <a href="../../%E6%9D%83%E9%99%90%E7%AE%A1%E6%8E%A7/jumper/">跳板堡垒机 Teleport</a>
+</li>
+
+        
+    </ul>
+  </li>
+
+                        
+                            
+  <li class="dropdown-submenu">
+    <a tabindex="-1" href="">监控告警</a>
+    <ul class="dropdown-menu">
+        
+            
+<li >
+    <a href="../">监控告警体系</a>
+</li>
+
+        
+            
+<li >
+    <a href="../grafana/">Grafana可视化监控仪表盘</a>
+</li>
+
+        
+            
+<li >
+    <a href="../monitoring_system_summary/">监控体系概要</a>
+</li>
+
+        
+            
+<li >
+    <a href="../n9e/">nightingale 夜莺监控系统</a>
+</li>
+
+        
+            
+<li >
+    <a href="../sentry/">Sentry 故障追溯平台</a>
+</li>
+
+        
+            
+<li >
+    <a href="../troubleshooting_tmplete/">运维故障处理文档模板</a>
+</li>
+
+        
+            
+  <li class="dropdown-submenu">
+    <a tabindex="-1" href="">Elk</a>
+    <ul class="dropdown-menu">
+        
+            
+<li class="active">
+    <a href="./">ELK集群安装配置手册（Docker版）</a>
+</li>
+
+        
+            
+<li >
+    <a href="curator/">curator ES索引管理工具</a>
+</li>
+
+        
+            
+<li >
+    <a href="docker-elk/">docker-comepose版的ELK</a>
+</li>
+
+        
+            
+<li >
+    <a href="elastalert/">Elastalert - Elasticsearch日志告警组件</a>
+</li>
+
+        
+            
+<li >
+    <a href="filebeat/">Filebeat简介</a>
+</li>
+
+        
+    </ul>
+  </li>
+
+        
+            
+  <li class="dropdown-submenu">
+    <a tabindex="-1" href="">Prometheus</a>
+    <ul class="dropdown-menu">
+        
+            
+<li >
+    <a href="../prometheus/mysqld_exporter/">MySQL Server Exporter 原生Mysql指标采集</a>
+</li>
+
+        
+            
+<li >
+    <a href="../prometheus/prometheus/">Prometheus 使用手册</a>
+</li>
+
+        
+            
+<li >
+    <a href="../prometheus/pushgateway/">Prometheus Pushgateway 简介</a>
+</li>
+
+        
+    </ul>
+  </li>
+
+        
+    </ul>
+  </li>
+
+                        
+                            
+  <li class="dropdown-submenu">
+    <a tabindex="-1" href="">配置管理</a>
+    <ul class="dropdown-menu">
+        
+            
+<li >
+    <a href="../../%E9%85%8D%E7%BD%AE%E7%AE%A1%E7%90%86/bk_cmdb/">蓝鲸智云配置平台(BlueKing CMDB)</a>
+</li>
+
+        
+            
+<li >
+    <a href="../../%E9%85%8D%E7%BD%AE%E7%AE%A1%E7%90%86/cmdbuild/">CMDBuild 开源配置管理系统</a>
+</li>
+
+        
+            
+<li >
+    <a href="../../%E9%85%8D%E7%BD%AE%E7%AE%A1%E7%90%86/gitlab/">Gitlab 代码版本管理</a>
+</li>
+
+        
+            
+<li >
+    <a href="../../%E9%85%8D%E7%BD%AE%E7%AE%A1%E7%90%86/%E5%9F%BA%E4%BA%8Econfd%E7%9A%84%E6%9C%AC%E5%9C%B0%E6%9C%8D%E5%8A%A1%E9%85%8D%E7%BD%AE%E7%AE%A1%E7%90%86/">基于confd的本地服务配置管理</a>
+</li>
+
+        
+    </ul>
+  </li>
+
+                        
+                        </ul>
+                    </li>
+                
+                
+                
+                    <li class="dropdown">
+                        <a href="#" class="dropdown-toggle" data-toggle="dropdown">自研项目 <b class="caret"></b></a>
+                        <ul class="dropdown-menu">
+                        
+                            
+  <li class="dropdown-submenu">
+    <a tabindex="-1" href="">MugWeb框架</a>
+    <ul class="dropdown-menu">
+        
+            
+<li >
+    <a href="../../../%E8%87%AA%E7%A0%94%E9%A1%B9%E7%9B%AE/MugWeb%E6%A1%86%E6%9E%B6/">Mug Web Framework 马克杯Web开发框架</a>
+</li>
+
+        
+    </ul>
+  </li>
+
+                        
+                            
+  <li class="dropdown-submenu">
+    <a tabindex="-1" href="">Stock starer股票盯盘</a>
+    <ul class="dropdown-menu">
+        
+            
+<li >
+    <a href="../../../%E8%87%AA%E7%A0%94%E9%A1%B9%E7%9B%AE/stock-starer%E8%82%A1%E7%A5%A8%E7%9B%AF%E7%9B%98/readme/">Stock Starer股票盯盘</a>
+</li>
+
+        
+    </ul>
+  </li>
+
+                        
+                        </ul>
+                    </li>
+                
+                
+                
+                    <li class="dropdown">
+                        <a href="#" class="dropdown-toggle" data-toggle="dropdown">读书和认证 <b class="caret"></b></a>
+                        <ul class="dropdown-menu">
+                        
+                            
+  <li class="dropdown-submenu">
+    <a tabindex="-1" href="">基金</a>
+    <ul class="dropdown-menu">
+        
+            
+<li >
+    <a href="../../../%E8%AF%BB%E4%B9%A6%E5%92%8C%E8%AE%A4%E8%AF%81/%E5%9F%BA%E9%87%91/">证券投资基金</a>
+</li>
+
+        
+            
+<li >
+    <a href="../../../%E8%AF%BB%E4%B9%A6%E5%92%8C%E8%AE%A4%E8%AF%81/%E5%9F%BA%E9%87%91/%E8%A1%8C%E4%B8%9A%E6%A6%82%E8%BF%B0/">行业概述</a>
+</li>
+
+        
+    </ul>
+  </li>
+
+                        
+                        </ul>
+                    </li>
+                
+                
+                </ul>
+
+            <ul class="nav navbar-nav navbar-right">
+                    <li>
+                        <a href="#" data-toggle="modal" data-target="#mkdocs_search_modal">
+                            <i class="fas fa-search"></i> Search
+                        </a>
+                    </li>
+                    <li >
+                        <a rel="prev" href="../troubleshooting_tmplete/">
+                            <i class="fas fa-arrow-left"></i> Previous
+                        </a>
+                    </li>
+                    <li >
+                        <a rel="next" href="curator/">
+                            Next <i class="fas fa-arrow-right"></i>
+                        </a>
+                    </li>
+            </ul>
+        </div>
+    </div>
+</div>
+
+    <div class="container">
+        
+        
+        <div class="col-md-3"><div class="bs-sidebar hidden-print affix well" role="complementary">
+    <ul class="nav bs-sidenav">
+        <li class="first-level active"><a href="#elkdocker">ELK集群安装配置手册（Docker版）</a></li>
+            <li class="second-level"><a href="#_1">参考</a></li>
+                
+            <li class="second-level"><a href="#_2">架构</a></li>
+                
+            <li class="second-level"><a href="#_3">安装</a></li>
+                
+                <li class="third-level"><a href="#elasticsearch">Elasticsearch</a></li>
+                <li class="third-level"><a href="#kibana">Kibana</a></li>
+                <li class="third-level"><a href="#kafka">Kafka</a></li>
+                <li class="third-level"><a href="#logstash">Logstash</a></li>
+                <li class="third-level"><a href="#filebeat">Filebeat</a></li>
+    </ul>
+</div></div>
+        <div class="col-md-9" role="main">
+
+<h1 id="elkdocker">ELK集群安装配置手册（Docker版）</h1>
+<!-- toc -->
+
+<h2 id="_1">参考</h2>
+<ul>
+<li><a href="https://www.elastic.co/guide/">官方文档</a></li>
+<li><a href="http://docs.flycloud.me/docs/ELKStack/">Elastic Stack 技术指南</a></li>
+<li><a href="https://github.com/elastic/curator">索引管理工具curator</a></li>
+<li><a href="https://developer.ibm.com/zh/articles/os-cn-elk-filebeat/">ELK 架构和 Filebeat 工作原理详解</a></li>
+<li><a href="https://github.com/justwatchcom/elasticsearch_exporter">监控方案Elasticsearch Exporter</a></li>
+<li><a href="/doc/monitor_system/监控告警/prometheus/prometheus.md">Prometheus博文</a></li>
+</ul>
+<h2 id="_2">架构</h2>
+<pre><code class="language-mermaid">graph TD
+Beat1 --&gt;|推| Kafka集群
+Beat2 --&gt;|推| Kafka集群
+BeatN --&gt;|推| Kafka集群
+Kafka集群 --&gt;|消费| Logstash集群
+Logstash集群 --&gt;|按Topic写| ES集群
+Logstash集群 --&gt;|冷备| HDFS
+ES集群 --&gt;|读| Kibana
+</code></pre>
+<h2 id="_3">安装</h2>
+<h3 id="elasticsearch">Elasticsearch</h3>
+<pre><code class="language-bash"># 准备外挂目录
+mkdir /opt/elasticsearch
+chmod 777 /opt/elasticsearch
+
+# 开发环境，单节点，限制内存，禁用swap，外挂数据
+docker pull elasticsearch:7.8.1
+docker run -d \
+    --name=elasticsearch \
+    -p 9200:9200 \
+    -p 9300:9300 \
+    -v /opt/elasticsearch:/usr/share/elasticsearch/data \
+    -e &quot;discovery.type=single-node&quot; \
+    -e &quot;ES_JAVA_OPTS=-Xms2000m -Xmx2000m&quot; \
+    -m 2g \
+    --memory-swap=&quot;2g&quot; \
+    elasticsearch:7.8.1
+
+# 验证
+curl 0.0.0.0:9300
+</code></pre>
+<h4 id="_4">注意事项</h4>
+<ul>
+<li>宿主机的<code>/etc/sysctl.conf</code>设置<code>vm.max_map_count=262144</code>，<code>sysctl -p</code>起效</li>
+<li>调大单个进程可以拥有的VMA(虚拟内存区域)的数量，否则容易OOM</li>
+</ul>
+<h4 id="_5">监控方案</h4>
+<p>基于Prometheus Exporter</p>
+<pre><code class="language-bash"># 新建elasticsearch_exporter目录
+mkdir /opt/elasticsearch_exporter
+cd /opt/elasticsearch_exporter
+# 生成docker-compose.yml，参考下文
+# 运行
+docker-compose up -d
+</code></pre>
+<pre><code class="language-yml"># docker-compose.yml，用于定义elasticsearch_exporter的启动参数
+elasticsearch_exporter:
+    image: justwatch/elasticsearch_exporter:1.1.0
+    command:
+     - '--es.uri=http://10.10.0.140:9200'
+    restart: always
+    ports:
+    - &quot;0.0.0.0:9114:9114&quot;
+</code></pre>
+<p>在Prometheus配置服务发现</p>
+<pre><code class="language-json">// sd_config.json添加相关服务
+  {
+    &quot;targets&quot;: [
+        &quot;10.10.0.140:9114&quot;
+    ],
+    &quot;labels&quot;: {
+      &quot;env&quot;: &quot;dev&quot;,
+      &quot;job&quot;: &quot;elasticsearch&quot;
+    }
+  },
+</code></pre>
+<p>注册成功如图<img alt="es服务注册Prometheus" src="es_server_reg.png" />
+通过Prometheus的HTTP API确认ES集群的存活，如
+<code>'curl http://10.10.0.140:9090/api/v1/query?query=elasticsearch_cluster_health_up'</code>
+反馈json如下：</p>
+<pre><code class="language-json">{
+    &quot;status&quot;: &quot;success&quot;,
+    &quot;data&quot;: {
+        &quot;resultType&quot;: &quot;vector&quot;,
+        &quot;result&quot;: [
+            {
+                &quot;metric&quot;: {
+                    &quot;__name__&quot;: &quot;elasticsearch_cluster_health_up&quot;,  // 唯一Metric，其他是tag
+                    &quot;env&quot;: &quot;dev&quot;,
+                    &quot;instance&quot;: &quot;10.10.0.140:9114&quot;,  // 对应es的Exporter地址
+                    &quot;job&quot;: &quot;elasticsearch&quot;
+                },
+                &quot;value&quot;: [
+                    1598001650.145,  // 采集的最后时间戳
+                    &quot;1&quot;  // 值，根据Metric定义
+                ]
+            }
+        ]
+    }
+}
+</code></pre>
+<h5 id="_6">常用指标</h5>
+<table>
+<thead>
+<tr>
+<th>指标</th>
+<th>监控目标</th>
+<th>类型</th>
+<th>单位</th>
+<th>意义</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>elasticsearch_cluster_health_up</td>
+<td>集群</td>
+<td>gauge</td>
+<td>字典</td>
+<td>ES集群的存活状态，1=运行；0=宕机</td>
+</tr>
+<tr>
+<td>elasticsearch_cluster_health_active_shards</td>
+<td>集群</td>
+<td>gauge</td>
+<td>正整数</td>
+<td>分片总数量，包括副本</td>
+</tr>
+<tr>
+<td>elasticsearch_cluster_health_unassigned_shards</td>
+<td>集群</td>
+<td>gauge</td>
+<td>正整数</td>
+<td>未分配的分片数，大于总分片数的50%，代表集群异常</td>
+</tr>
+<tr>
+<td>elasticsearch_jvm_memory_max_bytes</td>
+<td>node</td>
+<td>gauge</td>
+<td>byte</td>
+<td>jvm最大内存数，由Xmx指定</td>
+</tr>
+<tr>
+<td>elasticsearch_jvm_memory_used_bytes{area="heap"}</td>
+<td>node</td>
+<td>gauge</td>
+<td>byte</td>
+<td>node的jvm使用的堆内存数，大于总内存的90%代表异常</td>
+</tr>
+<tr>
+<td>elasticsearch_filesystem_data_used_percent</td>
+<td>集群</td>
+<td>gauge</td>
+<td>百分比</td>
+<td>已用磁盘百分比</td>
+</tr>
+</tbody>
+</table>
+<ul>
+<li><code>elasticsearch_filesystem_data_used_percent = 100 * (elasticsearch_filesystem_data_size_bytes - elasticsearch_filesystem_data_free_bytes) / elasticsearch_filesystem_data_size_bytes</code></li>
+</ul>
+<pre><code class="language-yml"># 接Prometheus的常用告警规则elasticsearch.rules.yml
+# calculate filesystem used and free percent
+elasticsearch_filesystem_data_used_percent = 100 * (elasticsearch_filesystem_data_size_bytes - elasticsearch_filesystem_data_free_bytes) / elasticsearch_filesystem_data_size_bytes
+
+# alert if heap usage is over 90%
+ALERT ElasticsearchHeapTooHigh
+  IF elasticsearch_jvm_memory_used_bytes{area=&quot;heap&quot;} / elasticsearch_jvm_memory_max_bytes{area=&quot;heap&quot;} &gt; 0.9
+  FOR 15m
+  LABELS {severity=&quot;critical&quot;}
+  ANNOTATIONS {description=&quot;The heap usage is over 90% for 15m&quot;, summary=&quot;ElasticSearch node {{$labels.node}} heap usage is high&quot;}
+</code></pre>
+<h3 id="kibana">Kibana</h3>
+<pre><code class="language-bash">docker pull kibana:7.8.1
+docker run \
+  --link elasticsearch:elasticsearch \
+  -p 5601:5601 \
+  kibana:7.8.1
+</code></pre>
+<p>访问<code>http://主机:5601</code>查看效果<img alt="kibana" src="kibana.png" /></p>
+<h3 id="kafka">Kafka</h3>
+<p>参考 <a href="/doc/tech_tutorial/中间件/kafka.md">kafka教程</a></p>
+<h3 id="logstash">Logstash</h3>
+<pre><code class="language-bash">docker pull logstash:7.8.1
+# 准备放配置的目录
+mkdir /opt/logstash
+chmod 777 /opt/logstash
+cd /opt/logstash
+# 生成相关配置文件，参考下面
+# 启动
+docker run -d \
+  --name=logstash \
+  --volume=/opt/logstash/:/usr/share/logstash/config/ \
+  --rm \
+  -m 2g \
+  -p 9600:9600 \
+  -t logstash:7.8.1 \
+  -f /usr/share/logstash/config/logstash.conf
+</code></pre>
+<pre><code class="language-yml"># logstash.yml用于配置
+http.host: &quot;0.0.0.0&quot;
+</code></pre>
+<pre><code class="language-conf"># logstash.conf用于说明pipeline
+input {
+  # syslog
+  kafka {
+    bootstrap_servers =&gt; &quot;10.10.0.106:32775,10.10.0.106:32776&quot;
+    topics =&gt; [&quot;syslog&quot;]
+    codec =&gt; &quot;json&quot;
+    consumer_threads =&gt; 3
+    id =&gt; &quot;syslog&quot;
+  }
+}
+
+filter {
+    grok {
+      match =&gt; { &quot;message&quot; =&gt; &quot;%{SYSLOGTIMESTAMP:syslog_timestamp} %{SYSLOGHOST:syslog_hostname} %{DATA:syslog_program}(?:\[%{POSINT:syslog_pid}\])?: %{GREEDYDATA:syslog_message}&quot; }
+      add_field =&gt; [ &quot;received_at&quot;, &quot;%{@timestamp}&quot; ]
+    }
+    date {
+      match =&gt; [ &quot;syslog_timestamp&quot;, &quot;MMM  d HH:mm:ss&quot;, &quot;MMM dd HH:mm:ss&quot; ]
+    }
+}
+
+output {
+  # 进内部es
+  elasticsearch {
+    hosts =&gt; [&quot;10.10.0.140:9200&quot;]
+    index =&gt; &quot;syslog-%{+YYYY.MM.dd}&quot;
+    id =&gt; &quot;dev-es&quot;
+    # 指定模板，解决单节点有副本，造成集群状态yellow的问题
+    template =&gt; &quot;/usr/share/logstash/config/syslog.json&quot;
+    template_name =&gt; &quot;syslog-*&quot;
+    template_overwrite =&gt; true
+  }
+}
+</code></pre>
+<pre><code class="language-json">// syslog.json，由于默认1分片1副本，会在单实例上造成unassign shard，导致yellow，这里设置不要副本
+{
+    &quot;template&quot;: &quot;syslog-*&quot;,
+    &quot;settings&quot;: {
+      &quot;number_of_replicas&quot; : 0
+    }
+}
+</code></pre>
+<h3 id="filebeat">Filebeat</h3>
+<pre><code class="language-bash"># 安装解压
+curl -L -O https://artifacts.elastic.co/downloads/beats/filebeat/filebeat-7.8.1-linux-x86_64.tar.gz
+tar xzvf filebeat-7.8.1-linux-x86_64.tar.gz
+mv filebeat-7.8.1-linux-x86_64 filebeat
+cd filebeat
+# 生成配置文件filebeat_syslog.yml
+# 测试配置是否正确
+./filebeat test config -c filebeat_syslog.yml
+# 如果需要读系统log，需要filebeat的权限chown root
+# 启动
+./filebeat -e -c filebeat_syslog.yml
+</code></pre>
+<pre><code class="language-yml">filebeat.inputs:
+# filebeat_syslog.yml 用于采集本机syslog
+- type: log
+  enabled: true
+  paths:
+    - /var/log/messages
+  fields:
+    kafka_topic: syslog  # 和kafka上定义的topic对应
+
+  # 忽略1h前的内容
+  # ignore_older: 1h
+
+# 输出
+#output.console:
+#  pretty: true
+output:
+  kafka:
+    hosts: [&quot;10.10.0.106:32775&quot;, &quot;10.10.0.106:32776&quot;]
+    topic: '%{[fields][kafka_topic]}'
+    compression: snappy
+</code></pre></div>
+        
+        
+    </div>
+
+    
+      <footer class="col-md-12 text-center">
+          
+          
+            <hr>
+            <p>
+            <small>Documentation built with <a href="http://www.mkdocs.org/">MkDocs</a>.</small>
+            </p>
+          
+
+          
+          
+      </footer>
+    
+    <script src="//cdnjs.loli.net/ajax/libs/jquery/1.12.4/jquery.min.js"></script>
+    <script src="../../../js/bootstrap-3.0.3.min.js"></script>
+
+    
+    <script src="//cdn.jsdelivr.net/gh/highlightjs/cdn-release@9.18.0/build/highlight.min.js"></script>
+        
+    <script>hljs.initHighlightingOnLoad();</script>
+    
+
+    <script>var base_url = "../../.."</script>
+    
+    <script src="../../../js/base.js"></script>
+    <script src="../../../search/main.js"></script>
+
+    <div class="modal" id="mkdocs_search_modal" tabindex="-1" role="dialog" aria-labelledby="searchModalLabel" aria-hidden="true">
+    <div class="modal-dialog modal-lg">
+        <div class="modal-content">
+            <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal">
+                    <span aria-hidden="true">&times;</span>
+                    <span class="sr-only">Close</span>
+                </button>
+                <h4 class="modal-title" id="searchModalLabel">Search</h4>
+            </div>
+            <div class="modal-body">
+                <p>
+                    From here you can search these documents. Enter
+                    your search terms below.
+                </p>
+                <form>
+                    <div class="form-group">
+                        <input type="text" class="form-control" placeholder="Search..." id="mkdocs-search-query" title="Type search term here">
+                    </div>
+                </form>
+                <div id="mkdocs-search-results"></div>
+            </div>
+            <div class="modal-footer">
+            </div>
+        </div>
+    </div>
+</div><div class="modal" id="mkdocs_keyboard_modal" tabindex="-1" role="dialog" aria-labelledby="keyboardModalLabel" aria-hidden="true">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h4 class="modal-title" id="keyboardModalLabel">Keyboard Shortcuts</h4>
+                <button type="button" class="close" data-dismiss="modal"><span aria-hidden="true">&times;</span><span class="sr-only">Close</span></button>
+            </div>
+            <div class="modal-body">
+              <table class="table">
+                <thead>
+                  <tr>
+                    <th style="width: 20%;">Keys</th>
+                    <th>Action</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  <tr>
+                    <td class="help shortcut"><kbd>?</kbd></td>
+                    <td>Open this help</td>
+                  </tr>
+                  <tr>
+                    <td class="next shortcut"><kbd>n</kbd></td>
+                    <td>Next page</td>
+                  </tr>
+                  <tr>
+                    <td class="prev shortcut"><kbd>p</kbd></td>
+                    <td>Previous page</td>
+                  </tr>
+                  <tr>
+                    <td class="search shortcut"><kbd>s</kbd></td>
+                    <td>Search</td>
+                  </tr>
+                </tbody>
+              </table>
+            </div>
+            <div class="modal-footer">
+            </div>
+        </div>
+    </div>
+</div>
+    </body>
+
+</html>
