@@ -14,11 +14,11 @@
 * 2021-11-15 [KubeSphere 容器平台](tech_tutorial/虚拟化/kubesphere.md)
 * 2021-10-25 [无头CMS - Strapi](业务方案/内容管理/headless-cms.md) 
 * 2021-10-16
-  > [Casbin 访问控制框架](业务方案/权限管控/casbin.md)
+  > [Casbin 访问控制框架](业务方案/权限管控/casbin.md)  
   > [基于API网关的用户权限管理服务](业务方案/权限管控/api_gateway_auth.md)
 * 2021-10-8 [腾讯蓝鲸CMDB](业务方案/配置管理/bk_cmdb.md)
 * 2021-9-6
-  > [Jsonlogic 简单方便的规则引擎](tech_tutorial/workflow/jsonlogic.md)
+  > [Jsonlogic 简单方便的规则引擎](tech_tutorial/workflow/jsonlogic.md)  
   > 重构了首页索引，基于简单的时序change log
 * 2021-9-3 [基于Confd的一种本地配置服务方案](业务方案/配置管理/基于confd的本地服务配置管理.md)
 

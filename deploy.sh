@@ -16,4 +16,6 @@ sleep 1
 git commit -m 'deploy'
 
 # 推送GitHub，等待输入密码
-git push -f git@github.com:chenqing24/chenqing24.github.io.git master:gh-pages
+# git push -f git@github.com:chenqing24/chenqing24.github.io.git master:gh-pages
+# 操蛋的官方强制把master换为main
+git push -f git@github.com:chenqing24/chenqing24.github.io.git main:gh-pages
