@@ -5,7 +5,7 @@
 * 官网: <https://www.seafile.com/home/>
 * 文档: <https://cloud.seafile.com/published/seafile-manual-cn/docker/%E7%94%A8Docker%E9%83%A8%E7%BD%B2Seafile.md>
 
-## 安装服务端
+## 安装服务端（基于docker）
 
 1. 安装docker，docker-compose
 2. 新建目录`/opt/seafile`，在其中新建以下`docker-compose.yml`  
@@ -58,3 +58,8 @@ seafile-net:
 
 3. 启动`docker compose up -d`
 4. 访问`http://{你的外网IP}:18888`，用SEAFILE_ADMIN_EMAIL登录
+
+## 安装客服端
+
+1. 下载官方客户端 <https://www.seafile.com/download/>
+
