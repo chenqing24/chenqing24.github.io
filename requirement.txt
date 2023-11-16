@@ -9,7 +9,8 @@ mkdocs==1.2.2
 packaging==21.0
 pyparsing==2.4.7
 python-dateutil==2.8.2
-PyYAML==5.4.1
+#PyYAML==5.4.1
+PyYAML
 pyyaml-env-tag==0.1
 six==1.16.0
 typing-extensions==3.10.0.0

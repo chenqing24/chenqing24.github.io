@@ -22,3 +22,7 @@
 * ```for i in `find /opt/*/bin/nohup.out`; do cat /dev/null > $i; done```找到批量nohup.out，并清除内容
 * `find /opt/ -ctime +7 -name "trace*.log" | xargs rm -f`找到7天以前的log文件，并删除
 
+## 随机密码生成
+
+* 最简单生成方法`date | md5sum`，缺点：只有英数字
+* 生成带特殊字符的`openssl rand -base64 32`
